@@ -1,5 +1,5 @@
 declare module "game/path-finder" {
-  import { RoomPosition } from "game";
+  import { DirectionConstant, RoomPosition } from "game";
   // TODO: type this
   export function searchPath(origin: any, goal: any, options: any): any;
 
@@ -119,5 +119,12 @@ declare module "game/path-finder" {
     //  * Draw a line along the creep’s path using `RoomVisual.poly`. You can provide either an empty object or custom style parameters.
     //  */
     // visualizePathStyle?: PolyStyle;
+  }
+  export interface PathStep {
+    x: number;
+    dx: number;
+    y: number;
+    dy: number;
+    direction: DirectionConstant;
   }
 }
