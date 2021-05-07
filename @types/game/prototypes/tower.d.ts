@@ -18,8 +18,8 @@ declare module "game/prototypes" {
      * An object that contains a cargo of this structure. Towers can contain only energy.
      */
     store: {
-      energy: any;
-      getCapacity(): any;
+      energy: number;
+      getCapacity(): number;
     };
     /**
      * Remotely attack any creep or structure.
