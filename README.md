@@ -1,6 +1,7 @@
 This repo is a WIP starter template for the current Closed Alpha of Screeps Arena
 
 TODO:
+
 - [] Update readme
 - [] A way to seperate the code for the different arenas
 - [] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
@@ -11,13 +12,15 @@ TODO:
   - We should probably make a new repo later for `typed-screeps-arena` that can be published to `@types/screeps-arena`
 
 Current Issues:
+
 - Unable to extend existing objects, like adding `initialPos` to `Creep`
 - Generated rollup result in wrong import statements that are not relative
   - `import { Creep } from "game";` in .ts but it should be `import { Creep } from "/game";` in the `.mjs` output
+- How do we share common types between modules? `RoomObjects` as an example
 
 The initial example code from the steam forum is included with a workaround for `initialPos`
 
-----
+---
 
 # Screeps Arena Typescript Starter
 

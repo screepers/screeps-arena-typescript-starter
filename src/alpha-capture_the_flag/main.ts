@@ -1,9 +1,18 @@
 // Note that there is no global objects like Game or Memory. All methods, prototypes and constants are imported built-in modules
-import {getObjectsByPrototype, getTime, RANGED_ATTACK, HEAL, ATTACK, getDirection, getDistance, RoomObject} from 'game';
+import {
+  ATTACK,
+  HEAL,
+  RANGED_ATTACK,
+  RoomObject,
+  getDirection,
+  getDistance,
+  getObjectsByPrototype,
+  getTime
+} from "game";
 
 // Everything can be imported either from the root /game module or corresponding submodules
-import {searchPath} from 'game';
-import {Creep} from 'game';
+import { searchPath } from "game";
+import { Creep } from "game";
 // import {searchPath} from '/game/path-finder';
 // import {Creep} from '/game/prototypes';
 
@@ -15,7 +24,7 @@ import {Creep} from 'game';
 // import * as prototypes from '/game/prototypes'; --> prototypes.Creep
 
 // This stuff is arena-specific
-import {Flag, BodyPart} from 'arena';
+import { BodyPart, Flag } from "arena";
 
 // You can also import your files like this:
 // import {roleAttacker} from './roles/attacker.mjs';
@@ -29,113 +38,108 @@ let enemyFlag: Flag;
 
 // Workaround for not being able to extend Creep like we extend CreepMemory in the starter pack.
 interface MyCreep extends Creep {
-    initialPos?: { x: number; y: number };
-  }
+  initialPos?: { x: number; y: number };
+}
 
 // This is the only exported function from the main module. It is called every tick.
 export function loop() {
+  // We assign global variables here. They will be accessible throughout the tick, and even on the following ticks too.
+  // getObjectsByPrototype function is the alternative to Room.find from Screeps World.
+  // There is no Game.creeps or Game.structures, you can manage game objects in your own way.
+  // TODO: getObjectsByPrototype should return a specific type, depending on the type passed into it
+  myCreeps = getObjectsByPrototype(Creep).filter((i: MyCreep) => i.my);
+  enemyCreeps = getObjectsByPrototype(Creep).filter((i: MyCreep) => !i.my);
+  enemyFlag = getObjectsByPrototype(Flag).find((i: MyCreep) => !i.my);
 
-    // We assign global variables here. They will be accessible throughout the tick, and even on the following ticks too.
-    // getObjectsByPrototype function is the alternative to Room.find from Screeps World.
-    // There is no Game.creeps or Game.structures, you can manage game objects in your own way.
-    // TODO: getObjectsByPrototype should return a specific type, depending on the type passed into it
-    myCreeps = getObjectsByPrototype(Creep).filter((i:MyCreep) => i.my);
-    enemyCreeps = getObjectsByPrototype(Creep).filter((i:MyCreep) => !i.my);
-    enemyFlag = getObjectsByPrototype(Flag).find((i:MyCreep) => !i.my);
+  // Notice how getTime is a global function, but not Game.time anymore
+  if (getTime() % 10 === 0) {
+    console.log(`I have ${myCreeps.length} creeps`);
+  }
 
-
-    // Notice how getTime is a global function, but not Game.time anymore
-    if(getTime() % 10 === 0) {
-        console.log(`I have ${myCreeps.length} creeps`);
+  // Run all my creeps according to their bodies
+  myCreeps.forEach(creep => {
+    if (creep.body.some(i => i.type === ATTACK)) {
+      meleeAttacker(creep);
     }
-
-    // Run all my creeps according to their bodies
-    myCreeps.forEach(creep => {
-        if(creep.body.some(i => i.type === ATTACK)) {
-            meleeAttacker(creep);
-        }
-        if(creep.body.some(i => i.type === RANGED_ATTACK)) {
-            rangedAttacker(creep);
-        }
-        if(creep.body.some(i => i.type === HEAL)) {
-            healer(creep);
-        }
-    });
+    if (creep.body.some(i => i.type === RANGED_ATTACK)) {
+      rangedAttacker(creep);
+    }
+    if (creep.body.some(i => i.type === HEAL)) {
+      healer(creep);
+    }
+  });
 }
 
-function meleeAttacker(creep:MyCreep) {
+function meleeAttacker(creep: MyCreep) {
+  // Here is the alternative to the creep "memory" from Screeps World. All game objects are persistent. You can assign any property to it once, and it will be available during the entire match.
+  if (!creep.initialPos) {
+    creep.initialPos = { x: creep.x, y: creep.y };
+  }
 
-    // Here is the alternative to the creep "memory" from Screeps World. All game objects are persistent. You can assign any property to it once, and it will be available during the entire match.
-    if(!creep.initialPos) {
-        creep.initialPos = {x: creep.x, y: creep.y};
-    }
+  const targets = enemyCreeps
+    .filter(i => getDistance(i, creep.initialPos) < 10)
+    .sort((a, b) => getDistance(a, creep) - getDistance(b, creep));
 
-    const targets = enemyCreeps.filter(i => getDistance(i, creep.initialPos) < 10)
-		.sort((a,b) => getDistance(a, creep) - getDistance(b, creep));
-
-    if(targets.length > 0) {
-        creep.moveTo(targets[0]);
-        creep.attack(targets[0]);
-    }
-    else {
-        creep.moveTo(creep.initialPos);
-    }
+  if (targets.length > 0) {
+    creep.moveTo(targets[0]);
+    creep.attack(targets[0]);
+  } else {
+    creep.moveTo(creep.initialPos);
+  }
 }
 
-function rangedAttacker(creep:MyCreep) {
-    const targets = enemyCreeps.filter(i => true)
-		.sort((a,b) => getDistance(a, creep) - getDistance(b, creep));
+function rangedAttacker(creep: MyCreep) {
+  const targets = enemyCreeps.filter(i => true).sort((a, b) => getDistance(a, creep) - getDistance(b, creep));
 
-    if(targets.length > 0) {
-        creep.rangedAttack(targets[0]);
-    }
+  if (targets.length > 0) {
+    creep.rangedAttack(targets[0]);
+  }
 
+  creep.moveTo(enemyFlag);
+
+  const range = 3;
+  const enemiesInRange = enemyCreeps.filter(i => getDistance(i, creep) < range);
+  if (enemiesInRange.length > 0) {
+    flee(creep, enemiesInRange, range);
+  }
+}
+
+function healer(creep: MyCreep) {
+  const targets = myCreeps.filter(i => i !== creep && i.hits < i.hitsMax).sort((a, b) => a.hits - b.hits);
+
+  if (targets.length) {
+    creep.moveTo(targets[0]);
+  } else {
     creep.moveTo(enemyFlag);
+  }
 
-    const range = 3;
-    const enemiesInRange = enemyCreeps.filter(i => getDistance(i, creep) < range);
-    if(enemiesInRange.length > 0) {
-        flee(creep, enemiesInRange, range);
+  const healTargets = myCreeps.filter(i => getDistance(i, creep) <= 3).sort((a, b) => a.hits - b.hits);
+
+  if (healTargets.length > 0) {
+    if (getDistance(healTargets[0], creep) === 1) {
+      creep.heal(healTargets[0]);
+    } else {
+      creep.rangedHeal(healTargets[0]);
     }
-}
+  }
 
-function healer(creep:MyCreep) {
+  const range = 7;
+  const enemiesInRange = enemyCreeps.filter(i => getDistance(i, creep) < range);
+  if (enemiesInRange.length > 0) {
+    flee(creep, enemiesInRange, range);
+  }
 
-    const targets = myCreeps.filter(i => i !== creep && i.hits < i.hitsMax)
-        .sort((a,b) => a.hits - b.hits);
-
-    if(targets.length) {
-        creep.moveTo(targets[0]);
-    }
-    else {
-        creep.moveTo(enemyFlag);
-    }
-
-    const healTargets = myCreeps.filter(i => getDistance(i, creep) <= 3)
-        .sort((a,b) => a.hits - b.hits);
-
-    if(healTargets.length > 0) {
-        if(getDistance(healTargets[0], creep) === 1) {
-            creep.heal(healTargets[0]);
-        }
-        else {
-            creep.rangedHeal(healTargets[0]);
-        }
-    }
-
-    const range = 7;
-    const enemiesInRange = enemyCreeps.filter(i => getDistance(i, creep) < range);
-    if(enemiesInRange.length > 0) {
-        flee(creep, enemiesInRange, range);
-    }
-
-    creep.moveTo(enemyFlag);
+  creep.moveTo(enemyFlag);
 }
 
 function flee(creep: Creep, targets: RoomObject[], range: number) {
-    let result = searchPath(creep, targets.map(i => ({pos: i, range})), {flee: true});
-    if(result.path.length > 0) {
-        let direction = getDirection(result.path[0].x - creep.x, result.path[0].y - creep.y);
-        creep.move(direction);
-    }
+  const result = searchPath(
+    creep,
+    targets.map(i => ({ pos: i, range })),
+    { flee: true }
+  );
+  if (result.path.length > 0) {
+    const direction = getDirection(result.path[0].x - creep.x, result.path[0].y - creep.y);
+    creep.move(direction);
+  }
 }
