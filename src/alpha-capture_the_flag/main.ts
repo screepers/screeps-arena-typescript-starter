@@ -1,9 +1,11 @@
 // Note that there is no global objects like Game or Memory. All methods, prototypes and constants are imported built-in modules
-import {getObjectsByPrototype, getTime, RANGED_ATTACK, HEAL, ATTACK, getDirection, getDistance} from '/game';
+import {getObjectsByPrototype, getTime, RANGED_ATTACK, HEAL, ATTACK, getDirection, getDistance, RoomObject} from 'game';
 
 // Everything can be imported either from the root /game module or corresponding submodules
-import {searchPath} from '/game/path-finder';
-import {Creep} from '/game/prototypes';
+import {searchPath} from 'game';
+import {Creep} from 'game';
+// import {searchPath} from '/game/path-finder';
+// import {Creep} from '/game/prototypes';
 
 // This would work too:
 // import {searchPath} from '/game';
@@ -13,7 +15,7 @@ import {Creep} from '/game/prototypes';
 // import * as prototypes from '/game/prototypes'; --> prototypes.Creep
 
 // This stuff is arena-specific
-import {Flag, BodyPart} from '/arena';
+import {Flag, BodyPart} from 'arena';
 
 // You can also import your files like this:
 // import {roleAttacker} from './roles/attacker.mjs';
@@ -21,7 +23,14 @@ import {Flag, BodyPart} from '/arena';
 // We can define global objects that will be valid for the entire match.
 // The game guarantees there will be no global reset during the match.
 // Note that you cannot assign any game objects here, since they are populated on the first tick, not when the script is initialized.
-let myCreeps, enemyCreeps, enemyFlag;
+let myCreeps: MyCreep[];
+let enemyCreeps: Creep[];
+let enemyFlag: Flag;
+
+// Workaround for not being able to extend Creep like we extend CreepMemory in the starter pack.
+interface MyCreep extends Creep {
+    initialPos?: { x: number; y: number };
+  }
 
 // This is the only exported function from the main module. It is called every tick.
 export function loop() {
@@ -29,9 +38,10 @@ export function loop() {
     // We assign global variables here. They will be accessible throughout the tick, and even on the following ticks too.
     // getObjectsByPrototype function is the alternative to Room.find from Screeps World.
     // There is no Game.creeps or Game.structures, you can manage game objects in your own way.
-    myCreeps = getObjectsByPrototype(Creep).filter(i => i.my);
-    enemyCreeps = getObjectsByPrototype(Creep).filter(i => !i.my);
-    enemyFlag = getObjectsByPrototype(Flag).find(i => !i.my);
+    // TODO: getObjectsByPrototype should return a specific type, depending on the type passed into it
+    myCreeps = getObjectsByPrototype(Creep).filter((i:MyCreep) => i.my);
+    enemyCreeps = getObjectsByPrototype(Creep).filter((i:MyCreep) => !i.my);
+    enemyFlag = getObjectsByPrototype(Flag).find((i:MyCreep) => !i.my);
 
 
     // Notice how getTime is a global function, but not Game.time anymore
@@ -53,7 +63,7 @@ export function loop() {
     });
 }
 
-function meleeAttacker(creep) {
+function meleeAttacker(creep:MyCreep) {
 
     // Here is the alternative to the creep "memory" from Screeps World. All game objects are persistent. You can assign any property to it once, and it will be available during the entire match.
     if(!creep.initialPos) {
@@ -72,7 +82,7 @@ function meleeAttacker(creep) {
     }
 }
 
-function rangedAttacker(creep) {
+function rangedAttacker(creep:MyCreep) {
     const targets = enemyCreeps.filter(i => true)
 		.sort((a,b) => getDistance(a, creep) - getDistance(b, creep));
 
@@ -89,7 +99,7 @@ function rangedAttacker(creep) {
     }
 }
 
-function healer(creep) {
+function healer(creep:MyCreep) {
 
     const targets = myCreeps.filter(i => i !== creep && i.hits < i.hitsMax)
         .sort((a,b) => a.hits - b.hits);
@@ -122,7 +132,7 @@ function healer(creep) {
     creep.moveTo(enemyFlag);
 }
 
-function flee(creep, targets, range) {
+function flee(creep: Creep, targets: RoomObject[], range: number) {
     let result = searchPath(creep, targets.map(i => ({pos: i, range})), {flee: true});
     if(result.path.length > 0) {
         let direction = getDirection(result.path[0].x - creep.x, result.path[0].y - creep.y);
