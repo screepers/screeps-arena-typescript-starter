@@ -15,10 +15,10 @@ if (!dest) {
 }
 
 export default {
-  input: "src/main.ts",
+  input: "src/alpha-capture_the_flag/main.ts",
   output: {
-    file: "dist/main.js",
-    format: "cjs",
+    file: "dist/alpha-capture_the_flag/main.mjs",
+    format: "es",
     sourcemap: true
   },
 
@@ -27,6 +27,6 @@ export default {
     resolve({ rootDir: "src" }),
     commonjs(),
     typescript({tsconfig: "./tsconfig.json"}),
-    screeps({config: cfg, dryRun: cfg == null})
+    // screeps({config: cfg, dryRun: cfg == null})
   ]
 }
