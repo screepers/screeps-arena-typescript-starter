@@ -1,41 +1,46 @@
 declare module "game" {
-  type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
-  type MOVE = "move";
-  type WORK = "work";
-  type CARRY = "carry";
-  type ATTACK = "attack";
-  type RANGED_ATTACK = "ranged_attack";
-  type TOUGH = "tough";
-  type HEAL = "heal";
-  type CLAIM = "claim";
+  export type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
-  const MOVE: MOVE;
-  const WORK: WORK;
-  const CARRY: CARRY;
-  const ATTACK: ATTACK;
-  const RANGED_ATTACK: RANGED_ATTACK;
-  const TOUGH: TOUGH;
-  const HEAL: HEAL;
-  const CLAIM: CLAIM;
+  export type MOVE = "move";
+  export type WORK = "work";
+  export type CARRY = "carry";
+  export type ATTACK = "attack";
+  export type RANGED_ATTACK = "ranged_attack";
+  export type TOUGH = "tough";
+  export type HEAL = "heal";
+  export type CLAIM = "claim";
 
-  type DirectionConstant = TOP | TOP_RIGHT | RIGHT | BOTTOM_RIGHT | BOTTOM | BOTTOM_LEFT | LEFT | TOP_LEFT;
+  export const MOVE: MOVE;
+  export const WORK: WORK;
+  export const CARRY: CARRY;
+  export const ATTACK: ATTACK;
+  export const RANGED_ATTACK: RANGED_ATTACK;
+  export const TOUGH: TOUGH;
+  export const HEAL: HEAL;
+  export const CLAIM: CLAIM;
 
-  type TOP = 1;
-  type TOP_RIGHT = 2;
-  type RIGHT = 3;
-  type BOTTOM_RIGHT = 4;
-  type BOTTOM = 5;
-  type BOTTOM_LEFT = 6;
-  type LEFT = 7;
-  type TOP_LEFT = 8;
+  export type DirectionConstant = TOP | TOP_RIGHT | RIGHT | BOTTOM_RIGHT | BOTTOM | BOTTOM_LEFT | LEFT | TOP_LEFT;
 
-  const TOP: TOP;
-  const TOP_RIGHT: TOP_RIGHT;
-  const RIGHT: RIGHT;
-  const BOTTOM_RIGHT: BOTTOM_RIGHT;
-  const BOTTOM: BOTTOM;
-  const BOTTOM_LEFT: BOTTOM_LEFT;
-  const LEFT: LEFT;
-  const TOP_LEFT: TOP_LEFT;
+  export type TOP = 1;
+  export type TOP_RIGHT = 2;
+  export type RIGHT = 3;
+  export type BOTTOM_RIGHT = 4;
+  export type BOTTOM = 5;
+  export type BOTTOM_LEFT = 6;
+  export type LEFT = 7;
+  export type TOP_LEFT = 8;
+
+  export const TOP: TOP;
+  export const TOP_RIGHT: TOP_RIGHT;
+  export const RIGHT: RIGHT;
+  export const BOTTOM_RIGHT: BOTTOM_RIGHT;
+  export const BOTTOM: BOTTOM;
+  export const BOTTOM_LEFT: BOTTOM_LEFT;
+  export const LEFT: LEFT;
+  export const TOP_LEFT: TOP_LEFT;
+
+  export * from "game/utils";
+  export * from "game/path-finder";
+
 }
