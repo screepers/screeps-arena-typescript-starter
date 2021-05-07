@@ -1,4 +1,4 @@
-declare module "prototypes" {
+declare module "game/prototypes" {
   interface _Constructor<T> {
     readonly prototype: T;
   }
