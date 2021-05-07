@@ -1,6 +1,27 @@
-# Screeps Typescript Starter
+This repo is a WIP starter template for the current Closed Alpha of Screeps Arena
 
-Screeps Typescript Starter is a starting point for a Screeps AI written in Typescript. It provides everything you need to start writing your AI whilst leaving `main.ts` as empty as possible.
+TODO:
+- [] Update readme
+- [] A way to seperate the code for the different arenas
+- [] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
+- [] A way to push code to a specific arena
+  - Will probably be a copy of files to the correct location, depending on what location has been choosen in the arena client.
+- [] Initial typing declarations for Screeps Arena
+- [] Fletch out typings for Screeps Arena
+  - We should probably make a new repo later for `typed-screeps-arena` that can be published to `@types/screeps-arena`
+
+Current Issues:
+- Unable to extend existing objects, like adding `initialPos` to `Creep`
+- Generated rollup result in wrong import statements that are not relative
+  - `import { Creep } from "game";` in .ts but it should be `import { Creep } from "/game";` in the `.mjs` output
+
+The initial example code from the steam forum is included with a workaround for `initialPos`
+
+----
+
+# Screeps Arena Typescript Starter
+
+Screeps Arena Typescript Starter is a starting point for a Screeps Arena AI written in Typescript. It provides everything you need to start writing your AI whilst leaving `main.ts` as empty as possible.
 
 ## Basic Usage
 
