@@ -32,7 +32,7 @@ declare module "game/prototypes" {
 // Note that you cannot assign any game objects here, since they are populated on the first tick, not when the script is initialized.
 let myCreeps: Creep[];
 let enemyCreeps: Creep[];
-let enemyFlag: Flag;
+let enemyFlag: Flag | undefined;
 
 // This is the only exported function from the main module. It is called every tick.
 export function loop() {
@@ -40,9 +40,9 @@ export function loop() {
   // getObjectsByPrototype function is the alternative to Room.find from Screeps World.
   // There is no Game.creeps or Game.structures, you can manage game objects in your own way.
   // TODO: getObjectsByPrototype should return a specific type, depending on the type passed into it
-  myCreeps = getObjectsByPrototype(Creep).filter((i: Creep) => i.my);
-  enemyCreeps = getObjectsByPrototype(Creep).filter((i: Creep) => !i.my);
-  enemyFlag = getObjectsByPrototype(Flag).find((i: Creep) => !i.my);
+  myCreeps = getObjectsByPrototype(Creep).filter(i => i.my);
+  enemyCreeps = getObjectsByPrototype(Creep).filter(i => !i.my);
+  enemyFlag = getObjectsByPrototype(Flag).find(i => !i.my);
 
   // Notice how getTime is a global function, but not Game.time anymore
   if (getTime() % 10 === 0) {
