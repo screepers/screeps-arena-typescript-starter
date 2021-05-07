@@ -1,5 +1,5 @@
 declare module "game/prototypes" {
-  interface StructureTower extends RoomObject {
+  export interface StructureTower extends RoomObject {
     /**
      * The current amount of hit points of the tower.
      */
@@ -35,5 +35,5 @@ declare module "game/prototypes" {
   // interface StructureTowerConstructor extends _Constructor<StructureTower>, _ConstructorById<StructureTower> {}
 
   // const StructureTower: StructureTowerConstructor;
-  const StructureTower: StructureTower;
+  export const StructureTower: StructureTower;
 }

@@ -1,5 +1,5 @@
 declare module "game/prototypes" {
-  interface StructureWall extends RoomObject {
+  export interface StructureWall extends RoomObject {
     /**
      * The current amount of hit points of the wall.
      */
@@ -9,5 +9,5 @@ declare module "game/prototypes" {
      */
     hitsMax: number;
   }
-  const StructureWall: StructureWall;
+  export const StructureWall: StructureWall;
 }

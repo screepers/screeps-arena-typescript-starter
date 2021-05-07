@@ -1,16 +1,16 @@
 declare module "arena" {
-  // prototypes/flag.d.ts
-  interface Flag extends RoomObject {
-    my: boolean;
-  }
+  // import { RoomObject } from "game";
+  export * from "arena/prototypes";
+  // export interface BodyPart extends import("game").RoomObject {
+  //   type: any;
+  //   ticksToDecay: number;
+  // }
 
-  const Flag: Flag;
+  // export const BodyPart: BodyPart;
 
-  // prototypes/body-part.d.ts
-  interface BodyPart extends RoomObject {
-    type: any;
-    ticksToDecay: number;
-  }
+  // export interface Flag extends RoomObject {
+  //   my: boolean;
+  // }
 
-  const BodyPart: BodyPart;
+  // export const Flag: Flag;
 }

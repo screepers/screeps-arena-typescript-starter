@@ -1,5 +1,5 @@
 declare module "game/prototypes" {
-  interface RoomObject extends RoomPosition {
+  export interface RoomObject extends RoomPosition {
     // constructor(id: any);
     /**
      * Returns true if this object is live in the game at the moment. Check this property to verify cached or newly created object instances.

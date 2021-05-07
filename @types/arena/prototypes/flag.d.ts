@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-declare module "arena" {
-  module "prototypes" {
-    interface Flag extends RoomObject {
-      my: boolean;
-    }
-
-    const Flag: Flag;
+declare module "arena/prototypes" {
+  import { RoomObject } from "game";
+  export interface Flag extends RoomObject {
+    my: boolean;
   }
+
+  export const Flag: Flag;
 }

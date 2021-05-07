@@ -1,5 +1,5 @@
 declare module "game/prototypes" {
-  interface Creep extends RoomObject {
+  export interface Creep extends RoomObject {
     readonly prototype: Creep;
     /**
      * The current amount of hit points of the creep.
@@ -22,12 +22,12 @@ declare module "game/prototypes" {
      *     type: string (One of the body part types constants)
      *     hits: number (The remaining amount of hit points of this body part)
      */
-    body: { type: BodyPartConstant; hits: number }[];
+    body: { type: import("game").BodyPartConstant; hits: number }[];
     /**
      * Move the creep one square in the specified direction. direction must be one of the following constants:
      * @param direction
      */
-    move(direction: DirectionConstant): any;
+    move(direction: import("game").DirectionConstant): any;
     /**
      * Find the optimal path to the target within the same room and move to it.
      * A shorthand to consequent calls of findPathTo() and move() methods.
@@ -76,5 +76,5 @@ declare module "game/prototypes" {
 
   //   interface CreepConstructor extends _Constructor<Creep> {}
   // const Creep: CreepConstructor;
-  const Creep: Creep;
+  export const Creep: Creep;
 }

@@ -1,19 +1,11 @@
 // Note that there is no global objects like Game or Memory. All methods, prototypes and constants are imported built-in modules
-import {
-  ATTACK,
-  HEAL,
-  RANGED_ATTACK,
-  RoomObject,
-  getDirection,
-  getDistance,
-  getObjectsByPrototype,
-  getTime
-} from "game";
+import { ATTACK, HEAL, RANGED_ATTACK, getDirection, getDistance, getObjectsByPrototype, getTime } from "game";
 
 // Everything can be imported either from the root /game module or corresponding submodules
 import { searchPath } from "game";
 import { Creep } from "game";
-//import {searchPath } from '/game/path-finder';
+import { RoomObject } from "game";
+// import {searchPath } from '/game/path-finder';
 // import {Creep} from '/game/prototypes';
 
 // This would work too:
@@ -26,7 +18,7 @@ import { Creep } from "game";
 // This stuff is arena-specific
 import { BodyPart, Flag } from "arena";
 
-declare module "game" {
+declare module "game/prototypes" {
   interface Creep {
     initialPos: { x: number; y: number };
   }
