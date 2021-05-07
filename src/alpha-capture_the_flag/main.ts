@@ -88,7 +88,9 @@ function rangedAttacker(creep: Creep) {
     creep.rangedAttack(targets[0]);
   }
 
-  creep.moveTo(enemyFlag);
+  if (enemyFlag) {
+    creep.moveTo(enemyFlag);
+  }
 
   const range = 3;
   const enemiesInRange = enemyCreeps.filter(i => getDistance(i, creep) < range);
@@ -103,7 +105,9 @@ function healer(creep: Creep) {
   if (targets.length) {
     creep.moveTo(targets[0]);
   } else {
-    creep.moveTo(enemyFlag);
+    if (enemyFlag) {
+      creep.moveTo(enemyFlag);
+    }
   }
 
   const healTargets = myCreeps.filter(i => getDistance(i, creep) <= 3).sort((a, b) => a.hits - b.hits);
@@ -122,7 +126,9 @@ function healer(creep: Creep) {
     flee(creep, enemiesInRange, range);
   }
 
-  creep.moveTo(enemyFlag);
+  if (enemyFlag) {
+    creep.moveTo(enemyFlag);
+  }
 }
 
 function flee(creep: Creep, targets: RoomObject[], range: number) {
