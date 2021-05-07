@@ -237,4 +237,45 @@ declare module "game" {
     clone(): CostMatrix;
     serialize(): any;
   }
+
+  // constants
+  const CARRY_CAPACITY: 50;
+
+  const ERR_BUSY: -4;
+  const ERR_FULL: -8;
+  const ERR_INVALID_ARGS: -10;
+  const ERR_INVALID_TARGET: -7;
+  const ERR_NAME_EXISTS: -3;
+  const ERR_NOT_ENOUGH_ENERGY: -6;
+  const ERR_NOT_ENOUGH_EXTENSIONS: -6;
+  const ERR_NOT_ENOUGH_RESOURCES: -6;
+  const ERR_NOT_FOUND: -5;
+  const ERR_NOT_IN_RANGE: -9;
+  const ERR_NOT_OWNER: -1;
+  const ERR_NO_BODYPART: -12;
+  const ERR_NO_PATH: -2;
+  const ERR_TIRED: -11;
+  const OK: 0;
+
+  const HEAL_POWER: 12;
+  const OBSTACLE_OBJECT_TYPES: any;
+  const tower: any;
+  const constructedWall: any;
+  const RANGED_ATTACK_DISTANCE_RATE: any[];
+  const RANGED_ATTACK_POWER: 10;
+  const RANGED_HEAL_POWER: 4;
+  const ROAD_WEAROUT: 1;
+
+  const TERRAIN_MASK_SWAMP: 2;
+  const TERRAIN_MASK_WALL: 1;
+  const TOWER_CAPACITY: 1000;
+  const TOWER_ENERGY_COST: 10;
+  const TOWER_FALLOFF: 0.75;
+  const TOWER_FALLOFF_RANGE: 20;
+  const TOWER_HITS: 3000;
+  const TOWER_OPTIMAL_RANGE: 5;
+  const TOWER_POWER_ATTACK: 600;
+  const TOWER_POWER_HEAL: 400;
+  const TOWER_POWER_REPAIR: 800;
+  const TOWER_RANGE: 50;
 }
