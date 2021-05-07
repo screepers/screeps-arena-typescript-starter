@@ -14,11 +14,3 @@ declare module "game/prototypes" {
     y: number;
   }
 }
-
-/*
-declare module "game" {
-  module "prototypes" {
-
-  }
-}
-*/

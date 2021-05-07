@@ -1,5 +1,7 @@
 declare module "game/prototypes" {
-  export interface StructureTower extends RoomObject {
+  import { AnyCreep, ScreepsReturnCode } from "game";
+  export type STRUCTURE_TOWER = "tower";
+  export interface StructureTower extends OwnedStructure<STRUCTURE_TOWER> {
     /**
      * The current amount of hit points of the tower.
      */
@@ -24,13 +26,13 @@ declare module "game/prototypes" {
      * The target has to be within 50 squares range of the tower.
      * @param target
      */
-    attack(target: any): any;
+    attack(target: AnyCreep | Structure): ScreepsReturnCode;
     /**
      * Remotely heal any creep.
      * The target has to be within 50 squares range of the tower.
      * @param target
      */
-    heal(target: any): any;
+    heal(target: AnyCreep): ScreepsReturnCode;
   }
   // interface StructureTowerConstructor extends _Constructor<StructureTower>, _ConstructorById<StructureTower> {}
 

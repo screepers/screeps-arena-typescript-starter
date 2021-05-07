@@ -1,5 +1,14 @@
 // Note that there is no global objects like Game or Memory. All methods, prototypes and constants are imported built-in modules
-import { ATTACK, HEAL, RANGED_ATTACK, getDirection, getDistance, getObjectsByPrototype, getTime } from "game";
+import {
+  ATTACK,
+  HEAL,
+  RANGED_ATTACK,
+  RoomPosition,
+  getDirection,
+  getDistance,
+  getObjectsByPrototype,
+  getTime
+} from "game";
 
 // Everything can be imported either from the root /game module or corresponding submodules
 import { searchPath } from "game";
@@ -20,7 +29,7 @@ import { BodyPart, Flag } from "arena";
 
 declare module "game/prototypes" {
   interface Creep {
-    initialPos: { x: number; y: number };
+    initialPos: RoomPosition;
   }
 }
 
@@ -35,11 +44,10 @@ let enemyCreeps: Creep[];
 let enemyFlag: Flag | undefined;
 
 // This is the only exported function from the main module. It is called every tick.
-export function loop() {
+export function loop(): void {
   // We assign global variables here. They will be accessible throughout the tick, and even on the following ticks too.
   // getObjectsByPrototype function is the alternative to Room.find from Screeps World.
   // There is no Game.creeps or Game.structures, you can manage game objects in your own way.
-  // TODO: getObjectsByPrototype should return a specific type, depending on the type passed into it
   myCreeps = getObjectsByPrototype(Creep).filter(i => i.my);
   enemyCreeps = getObjectsByPrototype(Creep).filter(i => !i.my);
   enemyFlag = getObjectsByPrototype(Flag).find(i => !i.my);
