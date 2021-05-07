@@ -17,20 +17,28 @@ import {Creep} from 'game';
 // This stuff is arena-specific
 import {Flag, BodyPart} from 'arena';
 
+declare module "game" {
+
+  interface Creep {
+    initialPos: { x: number, y: number};
+  }
+
+}
+
 // You can also import your files like this:
 // import {roleAttacker} from './roles/attacker.mjs';
 
 // We can define global objects that will be valid for the entire match.
 // The game guarantees there will be no global reset during the match.
 // Note that you cannot assign any game objects here, since they are populated on the first tick, not when the script is initialized.
-let myCreeps: MyCreep[];
+let myCreeps: Creep[];
 let enemyCreeps: Creep[];
 let enemyFlag: Flag;
 
 // Workaround for not being able to extend Creep like we extend CreepMemory in the starter pack.
-interface MyCreep extends Creep {
-    initialPos?: { x: number; y: number };
-  }
+// interface MyCreep extends Creep {
+//     initialPos?: { x: number; y: number };
+//   }
 
 // This is the only exported function from the main module. It is called every tick.
 export function loop() {
@@ -39,9 +47,9 @@ export function loop() {
     // getObjectsByPrototype function is the alternative to Room.find from Screeps World.
     // There is no Game.creeps or Game.structures, you can manage game objects in your own way.
     // TODO: getObjectsByPrototype should return a specific type, depending on the type passed into it
-    myCreeps = getObjectsByPrototype(Creep).filter((i:MyCreep) => i.my);
-    enemyCreeps = getObjectsByPrototype(Creep).filter((i:MyCreep) => !i.my);
-    enemyFlag = getObjectsByPrototype(Flag).find((i:MyCreep) => !i.my);
+    myCreeps = getObjectsByPrototype(Creep).filter((i:Creep) => i.my);
+    enemyCreeps = getObjectsByPrototype(Creep).filter((i:Creep) => !i.my);
+    enemyFlag = getObjectsByPrototype(Flag).find((i:Creep) => !i.my);
 
 
     // Notice how getTime is a global function, but not Game.time anymore
@@ -63,7 +71,7 @@ export function loop() {
     });
 }
 
-function meleeAttacker(creep:MyCreep) {
+function meleeAttacker(creep:Creep) {
 
     // Here is the alternative to the creep "memory" from Screeps World. All game objects are persistent. You can assign any property to it once, and it will be available during the entire match.
     if(!creep.initialPos) {
@@ -82,7 +90,7 @@ function meleeAttacker(creep:MyCreep) {
     }
 }
 
-function rangedAttacker(creep:MyCreep) {
+function rangedAttacker(creep:Creep) {
     const targets = enemyCreeps.filter(i => true)
 		.sort((a,b) => getDistance(a, creep) - getDistance(b, creep));
 
@@ -99,7 +107,7 @@ function rangedAttacker(creep:MyCreep) {
     }
 }
 
-function healer(creep:MyCreep) {
+function healer(creep:Creep) {
 
     const targets = myCreeps.filter(i => i !== creep && i.hits < i.hitsMax)
         .sort((a,b) => a.hits - b.hits);
