@@ -6,6 +6,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
 import fg from "fast-glob";
 
+const scriptLimit = 10000000; // 10mb
 let cfg;
 const dest = process.env.DEST;
 if (!dest) {
@@ -36,6 +37,15 @@ const getOptions = (arena) => {
       resolve({ rootDir: "src" }),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
+      {
+        generateBundle(_options, bundle) {
+          for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
+            if (fileName === "main.mjs" && chunkOrAsset.code && chunkOrAsset.code.length >= scriptLimit*.98) {
+              console.log(`Warning: Script limit is ${scriptLimit/1000000}mb, output is ${chunkOrAsset.code.length} bytes`);
+            }
+          }
+        }
+      }
     ]
   };
 }
