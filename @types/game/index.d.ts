@@ -121,8 +121,8 @@ declare module "game" {
   export const RANGED_HEAL_POWER: 4;
   export const ROAD_WEAROUT: 1;
 
-  export const TERRAIN_MASK_SWAMP: 2;
-  export const TERRAIN_MASK_WALL: 1;
+  export const TERRAIN_SWAMP: 2;
+  export const TERRAIN_WALL: 1;
   export const TOWER_CAPACITY: 1000;
   export const TOWER_ENERGY_COST: 10;
   export const TOWER_FALLOFF: 0.75;
