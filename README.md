@@ -11,7 +11,7 @@
 TODO:
 
 - [ ] Update readme
-- [ ] A way to seperate the code for the different arenas
+- [x] A way to seperate the code for the different arenas
 - [x] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
 - [ ] A way to push code to a specific arena `npm run push alpha-capture-the-flag`
   - Will probably be a copy of files to the correct location, depending on what location has been choosen in the arena client.
@@ -56,8 +56,10 @@ yarn
 
 Fire up your preferred editor with typescript installed and you are good to go!
 
-- Run `npm run build` to produce a file in `dist/alpha-capture_the_flag/main.mjs`
-- Copy the `main.mjs` file to your desired location.
+- arenas are located in `src/arena_*`any folder you create in `src` with a name starting with `arena_` will result in a `main.mjs` in the `dist/arena_*` folder.
+- Run `npm run build` to generate all arenas to `/dist/*`
+  - this template produces the following as an example `/dist/alpha_capture_the_flag/main.mjs`
+- Copy the `main.mjs` file to your desired location or change the location in the Screeps Arena client to point to the desired `/dist/*` folder.
 
 ## Typings
 
