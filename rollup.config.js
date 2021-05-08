@@ -4,7 +4,7 @@ import clear from "rollup-plugin-clear";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
-// import screeps from "rollup-plugin-screeps";
+import multiInput from "rollup-plugin-multi-input";
 
 let cfg;
 const dest = process.env.DEST;
@@ -15,11 +15,11 @@ if (!dest) {
 }
 
 export default {
-  input: "src/alpha-capture_the_flag/main.ts",
+  input: "src/**/*.ts",
   external: ["game", "arena"], // <-- suppresses the warning
   output: {
-    file: "dist/alpha-capture_the_flag/main.mjs",
-    format: "es",
+    dir: "dist/",
+    format: "esm",
     sourcemap: true,
     paths: {
       // https://rollupjs.org/guide/en/#outputpaths
@@ -31,8 +31,7 @@ export default {
   plugins: [
     clear({ targets: ["dist"] }),
     commonjs(),
-    resolve({ rootDir: "src" }),
-    typescript({ tsconfig: "./tsconfig.json" })
-    // screeps({config: cfg, dryRun: cfg == null})
+    typescript({ tsconfig: "./tsconfig.json" }),
+    multiInput({ relative: 'src/' })
   ]
 };
