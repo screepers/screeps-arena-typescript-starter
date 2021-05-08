@@ -12,7 +12,7 @@ TODO:
 
 - [ ] Update readme
 - [ ] A way to seperate the code for the different arenas
-- [ ] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
+- [x] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
 - [ ] A way to push code to a specific arena `npm run push alpha-capture-the-flag`
   - Will probably be a copy of files to the correct location, depending on what location has been choosen in the arena client.
   - If we can't detect the locations, we will probably need a `screeps-arena.json` file where people can set up their desired output destinations
@@ -24,6 +24,9 @@ Current Issues:
 
 - eslint warnings
   - Unable to resolve path to module 'game' (.eslintimport/no-unresolved)
+- ErrorMapper is not usable
+  - `require` is undefined and there doesn't appear to be a way to load the source map.
+  - Use named functions where possible for a better debug experience when errors do occur
 
 ---
 
