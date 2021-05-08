@@ -2,9 +2,11 @@
 
 ## This repo is a WIP starter template for the current Closed Alpha of [Screeps Arena](https://store.steampowered.com/app/1137320/Screeps_Arena/)
 
-**_ Screeps Arena is a new game under active development, this repo is unoffcial and maintained by the screepers community_**
+## Screeps Arena is a new game _under active development_, this repo is unoffcial and maintained by the screepers community
 
-## Any issues you experience with this repo should be created as an issue in this repo, **_ the Screeps Arena devs should NOT be contacted!_**
+### Any issues you experience with this repo should be created as an issue in this repo, ** the Screeps Arena devs should NOT be contacted!**
+
+---
 
 TODO:
 
