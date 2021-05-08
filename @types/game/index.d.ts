@@ -1,5 +1,5 @@
 declare module "game" {
-  import { Creep } from "game/prototypes";
+  import { Creep, STRUCTURE_TOWER, STRUCTURE_WALL } from "game/prototypes";
   export type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
   export type MOVE = "move";
@@ -114,8 +114,9 @@ declare module "game" {
   export const ERR_TIRED: ERR_TIRED;
   export const OK: OK;
 
+  export type OBSTACLE_OBJECT_TYPES = AnyCreep | STRUCTURE_TOWER | STRUCTURE_WALL;
   export const HEAL_POWER: 12;
-  export const OBSTACLE_OBJECT_TYPES: any;
+  export const OBSTACLE_OBJECT_TYPES: OBSTACLE_OBJECT_TYPES;
   export const RANGED_ATTACK_DISTANCE_RATE: any[];
   export const RANGED_ATTACK_POWER: 10;
   export const RANGED_HEAL_POWER: 4;
