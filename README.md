@@ -7,18 +7,18 @@ TODO:
 - [] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
 - [] A way to push code to a specific arena
   - Will probably be a copy of files to the correct location, depending on what location has been choosen in the arena client.
-- [] Initial typing declarations for Screeps Arena
+- [x] Initial typing declarations for Screeps Arena
 - [] Fletch out typings for Screeps Arena
   - We should probably make a new repo later for `typed-screeps-arena` that can be published to `@types/screeps-arena`
 
 Current Issues:
 
-- Unable to extend existing objects, like adding `initialPos` to `Creep`
+- ~~Unable to extend existing objects, like adding `initialPos` to `Creep`~~
 - Generated rollup result in wrong import statements that are not relative
   - `import { Creep } from "game";` in .ts but it should be `import { Creep } from "/game";` in the `.mjs` output
-- How do we share common types between modules? `RoomObjects` as an example
+- ~~How do we share common types between modules? `RoomObjects` as an example~~
 
-The initial example code from the steam forum is included with a workaround for `initialPos`
+~~The initial example code from the steam forum is included with a workaround for `initialPos`~~
 
 ---
 

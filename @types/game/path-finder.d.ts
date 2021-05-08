@@ -1,16 +1,67 @@
 declare module "game/path-finder" {
   import { DirectionConstant, RoomPosition } from "game";
   // TODO: type this
-  export function searchPath(origin: any, goal: any, options: any): any;
+
+  /*
+  searchPath
+opts is an object containing additional pathfinding flags:
+costMatrix: CostMatrix (Container for custom navigation cost data)
+plainCost: number (Cost for walking on plain positions. The default is 1)
+swampCost: number (Cost for walking on swamp positions. The default is 5)
+flee: boolean (Instead of searching for a path to the goals this will search for a path away from the goals. The cheapest path that is out of range of every goal will be returned. The default is false)
+maxOps: number (The maximum allowed pathfinding operations. The default value is 50000)
+maxCost: number (The maximum allowed cost of the path returned. The default is Infinity.)
+heuristicWeight: number (Weight from 1 to 9 to apply to the heuristic in the A* formula F = G + weight * H. The default value is 1.2)
+
+Returns an object containing the following properties:
+path: array (The path found as an array of objects containing x and y properties)
+ops: number (Total number of operations performed before this path was calculated)
+cost: number (The total cost of the path as derived from plainCost, swampCost, and given CostMatrix instance)
+incomplete: boolean (If the pathfinder fails to find a complete path, this will be true)
+ */
+
+  export function searchPath(
+    origin: RoomPosition,
+    goal: RoomPosition | { pos: RoomPosition; range: number } | (RoomPosition | { pos: RoomPosition; range: number })[],
+    opts?: PathFinderOpts
+  ): any;
 
   // TODO: type this
   export interface CostMatrix {
-    deserialize(data: any): any;
+    // /**
+    //  * Creates a new CostMatrix containing 0's for all positions.
+    //  */
+    // new (): CostMatrix;
+
     _bits: Uint8Array;
-    set(xx: any, yy: any, val: any): void;
-    get(xx: any, yy: any): number;
+    /**
+     * Set the cost of a position in this CostMatrix.
+     * @param x X position in the room.
+     * @param y Y position in the room.
+     * @param cost Cost of this position. Must be a whole number. A cost of 0 will use the terrain cost for that tile. A cost greater than or equal to 255 will be treated as unwalkable.
+     */
+    set(x: number, y: number, cost: number): undefined;
+
+    /**
+     * Get the cost of a position in this CostMatrix.
+     * @param x X position in the room.
+     * @param y Y position in the room.
+     */
+    get(x: number, y: number): number;
+    /**
+     * Copy this CostMatrix into a new CostMatrix with the same data.
+     */
     clone(): CostMatrix;
-    serialize(): any;
+    /**
+     * Returns a compact representation of this CostMatrix which can be stored via JSON.stringify.
+     */
+    serialize(): number[];
+
+    /**
+     * Static method which deserializes a new CostMatrix using the return value of serialize.
+     * @param val Whatever serialize returned
+     */
+    deserialize(val: number[]): CostMatrix;
   }
 
   export interface FindPathOpts {

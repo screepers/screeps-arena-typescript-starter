@@ -116,8 +116,6 @@ declare module "game" {
 
   export const HEAL_POWER: 12;
   export const OBSTACLE_OBJECT_TYPES: any;
-  export const tower: any;
-  export const constructedWall: any;
   export const RANGED_ATTACK_DISTANCE_RATE: any[];
   export const RANGED_ATTACK_POWER: 10;
   export const RANGED_HEAL_POWER: 4;
