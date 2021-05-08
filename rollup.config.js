@@ -30,7 +30,6 @@ export default {
 
   plugins: [
     clear({ targets: ["dist"] }),
-    resolve({ rootDir: "src" }),
     commonjs(),
     typescript({ tsconfig: "./tsconfig.json" }),
     multiInput({ relative: 'src/' })
