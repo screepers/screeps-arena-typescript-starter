@@ -10,13 +10,13 @@
 
 TODO:
 
-- [] Update readme
-- [] A way to seperate the code for the different arenas
-- [] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
-- [] A way to push code to a specific arena
+- [ ] Update readme
+- [ ] A way to seperate the code for the different arenas
+- [ ] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
+- [ ] A way to push code to a specific arena
   - Will probably be a copy of files to the correct location, depending on what location has been choosen in the arena client.
 - [x] Initial typing declarations for Screeps Arena
-- [] Fletch out typings for Screeps Arena
+- [ ] Fletch out typings for Screeps Arena
   - We should probably make a new repo later for `typed-screeps-arena` that can be published to `@types/screeps-arena`
 
 Current Issues:
