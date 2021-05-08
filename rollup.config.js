@@ -4,7 +4,7 @@ import clear from "rollup-plugin-clear";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
-import multiInput from "rollup-plugin-multi-input";
+import fg from "fast-glob";
 
 let cfg;
 const dest = process.env.DEST;
@@ -14,24 +14,35 @@ if (!dest) {
   throw new Error("Invalid upload destination");
 }
 
-export default {
-  input: "src/**/*.ts",
-  external: ["game", "arena"], // <-- suppresses the warning
-  output: {
-    dir: "dist/",
-    format: "esm",
-    sourcemap: true,
-    paths: {
-      // https://rollupjs.org/guide/en/#outputpaths
-      game: "/game",
-      arena: "/arena"
-    }
-  },
+const getOptions = (arena) => {
+  return {
+    input: `${arena}/main.ts`,
+    external: ["game", "arena"], // <-- suppresses the warning
+    output: {
+      dir: arena.replace("src/","dist/"),
+      format: "esm",
+      sourcemap: true,
+      entryFileNames: "[name].mjs",
+      //preserveModules: true,
+      paths: {
+        // https://rollupjs.org/guide/en/#outputpaths
+        game: "/game",
+        arena: "/arena"
+      }
+    },
 
-  plugins: [
-    clear({ targets: ["dist"] }),
-    commonjs(),
-    typescript({ tsconfig: "./tsconfig.json" }),
-    multiInput({ relative: 'src/' })
-  ]
-};
+    plugins: [
+      clear({ targets: ["dist"] }),
+      resolve({ rootDir: "src" }),
+      commonjs(),
+      typescript({ tsconfig: "./tsconfig.json" }),
+    ]
+  };
+}
+
+const arenas = fg.sync("src/*arena_*", { onlyDirectories: true, });
+if (arenas.length === 0){
+  throw new Error("No arenas found in `src/`. Exiting");
+}
+
+export default arenas.map(getOptions);
