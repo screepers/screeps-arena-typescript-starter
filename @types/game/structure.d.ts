@@ -1,5 +1,4 @@
 declare module "game/prototypes" {
-  import { ScreepsReturnCode } from "game";
   export type StructureConstant = STRUCTURE_TOWER | STRUCTURE_WALL;
 
   export interface Structure<T extends StructureConstant = StructureConstant> extends RoomObject {

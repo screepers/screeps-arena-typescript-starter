@@ -1,5 +1,5 @@
 declare module "game/prototypes" {
-  import { FindPathOpts, PathStep, RoomPosition } from "game";
+  import { FindPathOpts, FindPathResult, RoomPosition } from "game";
   export interface RoomObject extends RoomPosition {
     // constructor(id: any);
     /**
@@ -12,11 +12,11 @@ declare module "game/prototypes" {
      * @param pos
      * @param opts
      */
-    findPathTo(pos: RoomPosition, opts: FindPathOpts): PathStep[];
+    findPathTo(pos: RoomPosition, opts: FindPathOpts): FindPathResult;
     toJSON(): {
-      id: any;
-      x: any;
-      y: any;
+      id: string;
+      x: number;
+      y: number;
     };
   }
 }

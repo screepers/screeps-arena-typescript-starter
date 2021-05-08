@@ -1,4 +1,6 @@
 declare module "game/utils" {
+  import { FindPathOpts, FindPathResult, RoomPosition, TERRAIN_SWAMP, TERRAIN_WALL } from "game";
+
   // TODO: fix types
 
   /**
@@ -30,17 +32,16 @@ declare module "game/utils" {
    */
   export function getDirection(dx: any, dy: any): any;
 
-  /*
-  findPath(fromPos, toPos, opts)
-Find an optimal path between fromPos and toPos. Unlike searchPath,
-findPath avoid all obstacles by default (unless costMatrix is specified).
-opts object containing additional options:
-ignore: array (objects which should be treated as obstacles during the search)
-Any options supported by searchPath method
+  /**
+   * Find an optimal path between fromPos and toPos. Unlike searchPath,
+   * findPath avoid all obstacles by default (unless costMatrix is specified).
+   * @param fromPos
+   * @param toPos
+   * @param opts object containing additional options:
+   * ignore: array (objects which should be treated as obstacles during the search)
+   * Any options supported by searchPath method
    */
-
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  export function findPath(fromPos: any, toPos: any, opts?: {}): any;
+  export function findPath(fromPos: RoomPosition, toPos: RoomPosition, opts?: FindPathOpts): FindPathResult;
 
   /**
    * Get linear range between two objects. a and b may be any object containing x and y properties.
@@ -49,8 +50,10 @@ Any options supported by searchPath method
    */
   export function getDistance(a: any, b: any): number;
 
-  /*
-  getTerrainAt(pos)
-Get an integer representation of the terrain at the given position. pos should be an object containing x and y properties. Returns TERRAIN_MASK_WALL, TERRAIN_MASK_SWAMP, or 0.
+  /**
+   * Get an integer representation of the terrain at the given position.
+   * Returns TERRAIN_WALL, TERRAIN_SWAMP, or 0.
+   * @param pos pos should be an object containing x and y properties
    */
+  export function getTerrainAt(pos: RoomPosition): TERRAIN_WALL | TERRAIN_SWAMP | 0;
 }
