@@ -22,8 +22,6 @@ TODO:
 
 Current Issues:
 
-- Generated rollup result in wrong import statements that are not relative, this causes your code to fail and will prevent you from pressing `Play`
-  - `import { Creep } from "game";` in .ts but it should be `import { Creep } from "/game";` in the `.mjs` output
 - eslint warnings
   - Unable to resolve path to module 'game' (.eslintimport/no-unresolved)
 
@@ -56,8 +54,6 @@ yarn
 Fire up your preferred editor with typescript installed and you are good to go!
 
 - Run `npm run build` to produce a file in `dist/alpha-capture_the_flag/main.mjs`
-- Open up `dist/alpha-capture_the_flag/main.mjs` and make screeps arena api imports relative.
-  - `import { Creep } from "game";` in .ts but it should be `import { Creep } from "/game";` in the `.mjs` output
 - Copy the `main.mjs` file to your desired location.
 
 ## Typings
