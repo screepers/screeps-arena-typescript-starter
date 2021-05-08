@@ -7,10 +7,10 @@ declare module "game/prototypes" {
     /**
      * X position in the room.
      */
-    x: number;
+    x: number | undefined;
     /**
      * Y position in the room.
      */
-    y: number;
+    y: number | undefined;
   }
 }
