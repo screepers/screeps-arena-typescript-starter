@@ -4,7 +4,7 @@
 
 ## Screeps Arena is a new game _under active development_, this repo is unoffcial and maintained by the screepers community
 
-### Any issues you experience with this repo should be created as an issue in this repo, ** the Screeps Arena devs should NOT be contacted!**
+### Any issues you experience with this repo should be created as an issue in this repo, _the Screeps Arena devs should NOT be contacted!_
 
 ---
 
