@@ -1,7 +1,13 @@
 declare module "arena/prototypes" {
-  import { RoomObject } from "game";
+  import { BodyPartConstant, RoomObject } from "game";
   export interface BodyPart extends RoomObject {
-    type: any;
+    /**
+     * The type of the body part.
+     */
+    type: BodyPartConstant;
+    /**
+     * The number of ticks until this item disappears.
+     */
     ticksToDecay: number;
   }
 
