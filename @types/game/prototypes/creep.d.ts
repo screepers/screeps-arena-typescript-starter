@@ -88,7 +88,5 @@ declare module "game/prototypes" {
     pull(target: any): any;
   }
 
-  //   interface CreepConstructor extends _Constructor<Creep> {}
-  // const Creep: CreepConstructor;
-  export const Creep: Creep;
+  export const Creep: _Constructor<Creep>;
 }

@@ -37,5 +37,5 @@ declare module "game/prototypes" {
   // interface StructureTowerConstructor extends _Constructor<StructureTower>, _ConstructorById<StructureTower> {}
 
   // const StructureTower: StructureTowerConstructor;
-  export const StructureTower: StructureTower;
+  export const StructureTower: _Constructor<StructureTower>;
 }
