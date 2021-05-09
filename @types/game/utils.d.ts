@@ -1,5 +1,6 @@
 declare module "game/utils" {
   import { FindPathOpts, FindPathResult, RoomPosition, TERRAIN_SWAMP, TERRAIN_WALL } from "game";
+  import { _Constructor } from "game/prototypes";
 
   // TODO: fix types
 
@@ -20,7 +21,7 @@ declare module "game/utils" {
    * Get all objects in the game with the specified prototype, for example, all creeps
    * @param prototype
    */
-  export function getObjectsByPrototype<T>(prototype: T): T[];
+  export function getObjectsByPrototype<T>(prototype: _Constructor<T>): T[];
   /**
    * Use this method to get heap statistics for your virtual machine
    */

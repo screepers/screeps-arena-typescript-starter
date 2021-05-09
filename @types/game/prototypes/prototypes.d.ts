@@ -1,6 +1,8 @@
 declare module "game/prototypes" {
   export interface _Constructor<T> {
     readonly prototype: T;
+    new(): T;
+    (): T;
   }
 
   export interface RoomPosition {
