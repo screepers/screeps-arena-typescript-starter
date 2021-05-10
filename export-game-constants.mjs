@@ -6,7 +6,7 @@ function doExport(name, obj) {
     if (typeof obj[key] === "function") {
       console.log(`export ${obj[key]}`);
     } else {
-      console.log(`export const ${key} = ${obj[key]}`);
+      console.log(`export const ${key} = ${JSON.stringify(obj[key])}`);
     }
   }
 }
