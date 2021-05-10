@@ -16,8 +16,6 @@ import { searchPath } from "game";
 import { Creep } from "game";
 import { RoomObject } from "game";
 
-import { foo } from "../arena_2/foo";
-console.log(foo);
 // import {searchPath } from '/game/path-finder';
 // import {Creep} from '/game/prototypes';
 
