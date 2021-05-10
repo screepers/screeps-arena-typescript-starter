@@ -25,10 +25,13 @@ const getOptions = (arena) => {
       sourcemap: true,
       entryFileNames: "[name].mjs",
       //preserveModules: true,
-      paths: {
+      paths: (path) => {
         // https://rollupjs.org/guide/en/#outputpaths
-        game: "/game",
-        arena: "/arena"
+        // TS requires that we use non-relative paths for these "ambient" modules
+        // The game requires relative paths, so prefix all game modules with "/" in the output bundle
+        if (path.startsWith("game") || path.startsWith("arena")) {
+          return "/"+path;
+        }
       }
     },
 
