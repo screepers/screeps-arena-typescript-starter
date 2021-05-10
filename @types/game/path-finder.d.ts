@@ -1,5 +1,5 @@
 declare module "game/path-finder" {
-  import { RoomPosition } from "game";
+  import { RoomPosition, _Constructor } from "game";
 
   export function searchPath(
     origin: RoomPosition,
@@ -43,6 +43,8 @@ declare module "game/path-finder" {
      */
     deserialize(val: number[]): CostMatrix;
   }
+
+  export const CostMatrix: _Constructor<CostMatrix>;
 
   export interface FindPathOpts {
     // // /**

@@ -1,6 +1,7 @@
 // Note that there is no global objects like Game or Memory. All methods, prototypes and constants are imported built-in modules
 import {
   ATTACK,
+  CostMatrix,
   HEAL,
   RANGED_ATTACK,
   RoomPosition,
@@ -45,6 +46,8 @@ declare module "game/prototypes" {
 let myCreeps: Creep[];
 let enemyCreeps: Creep[];
 let enemyFlag: Flag | undefined;
+
+const costMatrix = new CostMatrix();
 
 // This is the only exported function from the main module. It is called every tick.
 export function loop(): void {
