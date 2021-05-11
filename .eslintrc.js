@@ -27,7 +27,7 @@ module.exports = {
     "import/resolver": {
       typescript: {}
     },
-    "import/core-modules": ["game", "arena"] // https://github.com/benmosher/eslint-plugin-import/blob/v2.22.1/README.md#importcore-modules
+    "import/core-modules": ["game", "game/prototypes", "game/utils", "game/path-finder", "arena", "arena/prototypes"] // https://github.com/benmosher/eslint-plugin-import/blob/v2.22.1/README.md#importcore-modules
   },
   rules: {
     "@typescript-eslint/array-type": "error",
