@@ -8,12 +8,21 @@ import fg from "fast-glob";
 
 const scriptLimit = 10000000; // 10mb
 let cfg;
-const dest = process.env.DEST;
-if (!dest) {
-  console.log("No destination specified - code will be compiled but not uploaded");
-} else if ((cfg = require("./screeps.json")[dest]) == null) {
-  throw new Error("Invalid upload destination");
+let targetArena = "";
+if (process.argv[3] === "--config-") {
+  // we running dynamic mode
+  targetArena = process.argv[4] || '';
+} else if (process.argv[3] === "--environment") {
+  targetArena = process.env.DEST;
 }
+
+// if (!dest) {
+//   console.log("No destination specified - code will be compiled but not uploaded");
+// }
+// else if ((cfg = require("./screeps.json")[dest]) == null) {
+//   throw new Error("Invalid upload destination");
+// }
+
 
 const getOptions = (arena) => {
   return {
@@ -53,9 +62,15 @@ const getOptions = (arena) => {
   };
 }
 
-const arenas = fg.sync("src/*arena_*", { onlyDirectories: true, });
+const arenas = fg.sync(`src/*arena_*${targetArena}*`, { onlyDirectories: true, });
 if (arenas.length === 0){
-  throw new Error("No arenas found in `src/`. Exiting");
+  throw new Error("No matching arenas found in src/. Exiting");
+} else {
+  if(targetArena === "") {
+    console.log(`No arena targeted. Building all ${arenas.length} arenas.`);
+  } else {
+    console.log(`Buidling ${arenas.length} arena(s) for target "${targetArena}"`);
+  }
 }
 
 export default arenas.map(getOptions);
