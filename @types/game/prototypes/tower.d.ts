@@ -34,8 +34,8 @@ declare module "game/prototypes" {
      */
     heal(target: AnyCreep): ScreepsReturnCode;
   }
-  // interface StructureTowerConstructor extends _Constructor<StructureTower>, _ConstructorById<StructureTower> {}
 
-  // const StructureTower: StructureTowerConstructor;
-  export const StructureTower: _Constructor<StructureTower>;
+  interface StructureTowerConstructor extends _Constructor<StructureTower>, _ConstructorById<StructureTower> {}
+
+  export const StructureTower: StructureTowerConstructor;
 }

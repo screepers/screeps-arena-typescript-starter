@@ -1,5 +1,5 @@
 declare module "arena/prototypes" {
-  import { RoomObject, _Constructor } from "game";
+  import { RoomObject, _Constructor, _ConstructorById } from "game";
   export interface Flag extends RoomObject {
     readonly prototype: Flag;
     /**
@@ -9,5 +9,6 @@ declare module "arena/prototypes" {
     my: boolean | undefined;
   }
 
-  export const Flag: _Constructor<Flag>;
+  interface FlagConstructor extends _Constructor<Flag>, _ConstructorById<Flag> {}
+  export const Flag: FlagConstructor;
 }

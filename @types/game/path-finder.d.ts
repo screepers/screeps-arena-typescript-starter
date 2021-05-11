@@ -44,7 +44,9 @@ declare module "game/path-finder" {
     deserialize(val: number[]): CostMatrix;
   }
 
-  export const CostMatrix: _Constructor<CostMatrix>;
+  interface CostMatrixConstructor extends _Constructor<CostMatrix>, CostMatrix {}
+
+  export const CostMatrix: CostMatrixConstructor;
 
   export interface FindPathOpts {
     // // /**

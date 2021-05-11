@@ -1,5 +1,5 @@
 declare module "arena/prototypes" {
-  import { BodyPartConstant, RoomObject, _Constructor } from "game";
+  import { BodyPartConstant, RoomObject, _Constructor, _ConstructorById } from "game";
   export interface BodyPart extends RoomObject {
     readonly prototype: BodyPart;
     /**
@@ -11,6 +11,6 @@ declare module "arena/prototypes" {
      */
     ticksToDecay: number;
   }
-
-  export const BodyPart: _Constructor<BodyPart>;
+  interface BodyPartConstructor extends _Constructor<BodyPart>, _ConstructorById<BodyPart> {}
+  export const BodyPart: BodyPartConstructor;
 }

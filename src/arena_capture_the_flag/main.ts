@@ -7,6 +7,7 @@ import {
   RoomPosition,
   getDirection,
   getDistance,
+  getObjectById,
   getObjectsByPrototype,
   getTime
 } from "game";
@@ -55,6 +56,12 @@ export function loop(): void {
   myCreeps = getObjectsByPrototype(Creep).filter(i => i.my);
   enemyCreeps = getObjectsByPrototype(Creep).filter(i => !i.my);
   enemyFlag = getObjectsByPrototype(Flag).find(i => !i.my);
+
+  // verification that getObjectById works.
+  const creepForId = myCreeps[0];
+  if (creepForId) {
+    const creepFromGetObjectById = getObjectById(creepForId.id);
+  }
 
   // Notice how getTime is a global function, but not Game.time anymore
   if (getTime() % 10 === 0) {

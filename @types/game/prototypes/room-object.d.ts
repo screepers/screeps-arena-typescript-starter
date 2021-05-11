@@ -1,6 +1,12 @@
 declare module "game/prototypes" {
   import { FindPathOpts, FindPathResult, RoomPosition } from "game";
   export interface RoomObject extends RoomPosition {
+    /**
+     * A unique object identificator.
+     * You can use {@link getObjectById} method to retrieve an object instance by its id.
+     */
+    id: Id<this>;
+
     // constructor(id: any);
     /**
      * Returns true if this object is live in the game at the moment. Check this property to verify cached or newly created object instances.
