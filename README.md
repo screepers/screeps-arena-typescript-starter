@@ -10,15 +10,15 @@
 
 TODO:
 
-- [ ] Update readme
+- [x] Update readme
 - [x] A way to seperate the code for the different arenas
 - [x] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
 - [ ] A way to push code to a specific arena `npm run push alpha-capture-the-flag`
   - Will probably be a copy of files to the correct location, depending on what location has been choosen in the arena client.
   - If we can't detect the locations, we will probably need a `screeps-arena.json` file where people can set up their desired output destinations
 - [x] Initial typing declarations for Screeps Arena
-- [ ] Fletch out typings for Screeps Arena
-  - We should probably make a new repo later for `typed-screeps-arena` that can be published to `@types/screeps-arena`
+- [x] Fletch out typings for Screeps Arena
+- [ ] Make a new repo later for `typed-screeps-arena` that can be published to `@types/screeps-arena`
 
 Current Issues:
 
@@ -58,8 +58,15 @@ Fire up your preferred editor with typescript installed and you are good to go!
 
 - arenas are located in `src/arena_*`any folder you create in `src` with a name starting with `arena_` will result in a `main.mjs` in the `dist/arena_*` folder.
 - Run `npm run build` to generate all arenas to `/dist/*`
+
+- `npm run build` - everything is build, the player can change their arena to look at the specific `/dist/arena*` directory
   - this template produces the following as an example `/dist/alpha_capture_the_flag/main.mjs`
+- `npm run build capture` - a specific arena is build, the player can change their arena to look at the specific `/dist/arena*` directory knowing only that arena was updated
+
 - Copy the `main.mjs` file to your desired location or change the location in the Screeps Arena client to point to the desired `/dist/*` folder.
+
+~~- `npm run push` builds all arenas, then pushes all arenas to their respective folders where the client is pointed at.~~
+~~- `npm run push capture` builds the specific arena, then pushes the capture arena to their respective folders where the client is pointed at.~~
 
 ## Typings
 
