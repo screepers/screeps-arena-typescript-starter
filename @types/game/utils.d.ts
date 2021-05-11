@@ -1,6 +1,15 @@
 /* eslint-disable camelcase */
 declare module "game/utils" {
-  import { FindPathOpts, PathStep, Id, RoomObject, RoomPosition, TERRAIN_SWAMP, TERRAIN_WALL } from "game";
+  import {
+    DirectionConstant,
+    FindPathOpts,
+    Id,
+    PathStep,
+    RoomObject,
+    RoomPosition,
+    TERRAIN_SWAMP,
+    TERRAIN_WALL
+  } from "game";
   import { _Constructor } from "game/prototypes";
 
   // TODO: fix types
@@ -32,7 +41,7 @@ declare module "game/utils" {
    * @param dx
    * @param dy
    */
-  export function getDirection(dx: number, dy: number): any;
+  export function getDirection(dx: number, dy: number): DirectionConstant;
 
   /**
    * Find an optimal path between fromPos and toPos. Unlike searchPath,
