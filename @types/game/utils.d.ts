@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 declare module "game/utils" {
-  import { FindPathOpts, FindPathResult, Id, RoomObject, RoomPosition, TERRAIN_SWAMP, TERRAIN_WALL } from "game";
+  import { FindPathOpts, PathStep, Id, RoomObject, RoomPosition, TERRAIN_SWAMP, TERRAIN_WALL } from "game";
   import { _Constructor } from "game/prototypes";
 
   // TODO: fix types
@@ -43,7 +43,7 @@ declare module "game/utils" {
    * ignore: array (objects which should be treated as obstacles during the search)
    * Any options supported by searchPath method
    */
-  export function findPath(fromPos: RoomPosition, toPos: RoomPosition, opts?: FindPathOpts): FindPathResult;
+  export function findPath(fromPos: RoomPosition, toPos: RoomPosition, opts?: FindPathOpts): PathStep[];
 
   /**
    * Get linear range between two objects. a and b may be any object containing x and y properties.
