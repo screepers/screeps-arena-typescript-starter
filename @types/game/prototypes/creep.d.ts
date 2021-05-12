@@ -1,18 +1,6 @@
+import { BodyPartConstant, CreepMoveReturnCode, DirectionConstant } from "game/constants";
+
 declare module "game/prototypes" {
-  import {
-    AnyCreep,
-    BodyPartConstant,
-    CreepActionReturnCode,
-    CreepMoveReturnCode,
-    DirectionConstant,
-    ERR_BUSY,
-    ERR_INVALID_TARGET,
-    ERR_NOT_OWNER,
-    ERR_NO_BODYPART,
-    ERR_NO_PATH,
-    MoveToOpts,
-    OK
-  } from "game";
   export interface Creep extends RoomObject {
     readonly prototype: Creep;
     /**

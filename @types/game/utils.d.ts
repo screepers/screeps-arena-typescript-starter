@@ -1,18 +1,8 @@
 /* eslint-disable camelcase */
 declare module "game/utils" {
-  import {
-    DirectionConstant,
-    FindPathOpts,
-    Id,
-    PathStep,
-    RoomObject,
-    RoomPosition,
-    TERRAIN_SWAMP,
-    TERRAIN_WALL
-  } from "game";
-  import { _Constructor } from "game/prototypes";
-
-  // TODO: fix types
+  import { DirectionConstant, TERRAIN_SWAMP, TERRAIN_WALL } from "game/constants";
+  import { FindPathOpts, PathStep } from "game/path-finder";
+  import { Id, RoomObject, RoomPosition, _Constructor } from "game/prototypes";
 
   /**
    * Get count of game ticks passed since the start of the game

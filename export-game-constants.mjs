@@ -11,7 +11,7 @@ function doExport(name, obj) {
   }
 }
 const loop = () => {
-  if (getTime() == 0) {
+  if (getTime() == 1) {
     doExport("game", game);
   }
 };

@@ -301,6 +301,23 @@ export const LEFT = 7;
 export const MOVE = "move";
 export const OBSTACLE_OBJECT_TYPES = ["creep", "tower", "constructedWall"];
 export const OK = 0;
+export class OwnedStructure extends Structure {
+  get my() {
+    if (!this.exists) {
+      return;
+    }
+    if (SystemStore.roomObjectsData[this.id].user) {
+      return SystemStore.roomObjectsData[this.id].user === SystemStore.playerName;
+    }
+    return undefined;
+  }
+
+  toJSON() {
+    return Object.assign(super.toJSON(), {
+      my: this.my
+    });
+  }
+}
 export const RANGED_ATTACK = "ranged_attack";
 export const RANGED_ATTACK_DISTANCE_RATE = { 0: 1, 1: 1, 2: 0.4, 3: 0.1 };
 export const RANGED_ATTACK_POWER = 10;
@@ -348,35 +365,7 @@ export class RoomObject {
     };
   }
 }
-export class Spawn extends RoomObject {
-  get hits() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].hits;
-  }
-
-  get my() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].user === SystemStore.playerName;
-  }
-
-  toJSON() {
-    return Object.assign(super.toJSON(), {
-      hits: this.hits,
-      my: this.my
-    });
-  }
-
-  spawnCreep(body) {
-    let creep = new Creep();
-    Intents.set(this.id, "spawnCreep", { body, createRequest: getCreateRequest(creep) });
-    return creep;
-  }
-}
-export class StructureTower extends RoomObject {
+export class Structure extends RoomObject {
   get hits() {
     if (!this.exists) {
       return;
@@ -391,13 +380,21 @@ export class StructureTower extends RoomObject {
     return SystemStore.roomObjectsData[this.id].hitsMax;
   }
 
-  get my() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].user === SystemStore.playerName;
+  toJSON() {
+    return Object.assign(super.toJSON(), {
+      hits: this.hits,
+      hitsMax: this.hitsMax
+    });
   }
-
+}
+export class StructureSpawn extends OwnedStructure {
+  spawnCreep(body) {
+    let creep = new Creep();
+    Intents.set(this.id, "spawnCreep", { body, createRequest: getCreateRequest(creep) });
+    return creep;
+  }
+}
+export class StructureTower extends OwnedStructure {
   get store() {
     if (!this.exists) {
       return;
@@ -451,37 +448,8 @@ export class StructureTower extends RoomObject {
     Intents.set(this.id, "heal", { id: target.id });
     return C.OK;
   }
-
-  toJSON() {
-    return Object.assign(super.toJSON(), {
-      hits: this.hits,
-      hitsMax: this.hitsMax,
-      my: this.my
-    });
-  }
 }
-export class StructureWall extends RoomObject {
-  get hits() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].hits;
-  }
-
-  get hitsMax() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].hitsMax;
-  }
-
-  toJSON() {
-    return Object.assign(super.toJSON(), {
-      hits: this.hits,
-      hitsMax: this.hitsMax
-    });
-  }
-}
+export class StructureWall extends Structure {}
 export const TERRAIN_SWAMP = 2;
 export const TERRAIN_WALL = 1;
 export const TOP = 1;
@@ -498,6 +466,59 @@ export const TOWER_POWER_ATTACK = 600;
 export const TOWER_POWER_HEAL = 400;
 export const TOWER_POWER_REPAIR = 800;
 export const TOWER_RANGE = 50;
+export const arenaInfo = { name: "Capture the Flag", level: 1, season: "alpha" };
+export const constants = {
+  ATTACK: "attack",
+  ATTACK_POWER: 30,
+  BODYPART_HITS: 100,
+  BOTTOM: 5,
+  BOTTOM_LEFT: 6,
+  BOTTOM_RIGHT: 4,
+  CARRY: "carry",
+  CARRY_CAPACITY: 50,
+  ERR_BUSY: -4,
+  ERR_FULL: -8,
+  ERR_INVALID_ARGS: -10,
+  ERR_INVALID_TARGET: -7,
+  ERR_NAME_EXISTS: -3,
+  ERR_NOT_ENOUGH_ENERGY: -6,
+  ERR_NOT_ENOUGH_EXTENSIONS: -6,
+  ERR_NOT_ENOUGH_RESOURCES: -6,
+  ERR_NOT_FOUND: -5,
+  ERR_NOT_IN_RANGE: -9,
+  ERR_NOT_OWNER: -1,
+  ERR_NO_BODYPART: -12,
+  ERR_NO_PATH: -2,
+  ERR_TIRED: -11,
+  HEAL: "heal",
+  HEAL_POWER: 12,
+  LEFT: 7,
+  MOVE: "move",
+  OBSTACLE_OBJECT_TYPES: ["creep", "tower", "constructedWall"],
+  OK: 0,
+  RANGED_ATTACK: "ranged_attack",
+  RANGED_ATTACK_DISTANCE_RATE: { 0: 1, 1: 1, 2: 0.4, 3: 0.1 },
+  RANGED_ATTACK_POWER: 10,
+  RANGED_HEAL_POWER: 4,
+  RIGHT: 3,
+  ROAD_WEAROUT: 1,
+  TERRAIN_SWAMP: 2,
+  TERRAIN_WALL: 1,
+  TOP: 1,
+  TOP_LEFT: 8,
+  TOP_RIGHT: 2,
+  TOUGH: "tough",
+  TOWER_CAPACITY: 1000,
+  TOWER_ENERGY_COST: 10,
+  TOWER_FALLOFF: 0.75,
+  TOWER_FALLOFF_RANGE: 20,
+  TOWER_HITS: 3000,
+  TOWER_OPTIMAL_RANGE: 5,
+  TOWER_POWER_ATTACK: 600,
+  TOWER_POWER_HEAL: 400,
+  TOWER_POWER_REPAIR: 800,
+  TOWER_RANGE: 50
+};
 export function findPath(fromPos, toPos, opts = {}) {
   if (!opts.costMatrix) {
     opts.costMatrix = new CostMatrix();
@@ -586,6 +607,8 @@ export function getTerrainAt({ x, y }) {
 export function getTime() {
   return SystemStore.time;
 }
+export const pathFinder = {};
+export const prototypes = {};
 export function searchPath(origin, goal, options) {
   // Options
   options = options || {};
@@ -641,3 +664,4 @@ export function searchPath(origin, goal, options) {
   ret.path = ret.path.map(fromWorldPosition).reverse();
   return ret;
 }
+export const utils = {};

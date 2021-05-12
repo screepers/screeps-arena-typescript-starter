@@ -1,5 +1,5 @@
 declare module "arena/prototypes" {
-  import { RoomObject, _Constructor, _ConstructorById } from "game";
+  import { RoomObject, _Constructor, _ConstructorById } from "game/prototypes";
   export interface Flag extends RoomObject {
     readonly prototype: Flag;
     /**

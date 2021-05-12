@@ -1,34 +1,38 @@
 // Note that there is no global objects like Game or Memory. All methods, prototypes and constants are imported built-in modules
-import {
-  ATTACK,
-  CostMatrix,
-  HEAL,
-  RANGED_ATTACK,
-  RoomPosition,
-  getDirection,
-  getDistance,
-  getObjectById,
-  getObjectsByPrototype,
-  getTime
-} from "game";
+// import {
+//   ATTACK,
+//   CostMatrix,
+//   HEAL,
+//   RANGED_ATTACK,
+//   RoomPosition,
+//   getDirection,
+//   getDistance,
+//   getObjectById,
+//   getObjectsByPrototype,
+//   getTime
+// } from "game";
 
 // Everything can be imported either from the root /game module or corresponding submodules
-import { searchPath } from "game";
-import { Creep } from "game";
-import { RoomObject } from "game";
+// import { pathFinder } from "game";
+// pathFinder.searchPath();
+// import { prototypes } from "game";
+// prototypes.Creep
+// prototypes.RoomObject
 
 // import {searchPath } from '/game/path-finder';
 // import {Creep} from '/game/prototypes';
 
 // This would work too:
-// import {searchPath} from '/game';
 // import * as PathFinder from '/game/path-finder'; --> PathFinder.searchPath
-// import {Creep} from '/game';
 // import {Creep} from '/game/prototypes/creep';
 // import * as prototypes from '/game/prototypes'; --> prototypes.Creep
 
 // This stuff is arena-specific
+import { ATTACK, HEAL, RANGED_ATTACK } from "game/constants";
 import { BodyPart, Flag } from "arena";
+import { Creep, RoomObject } from "game/prototypes";
+import { getDirection, getDistance, getObjectsByPrototype, getTime } from "game/utils";
+import { searchPath } from "game/path-finder";
 
 declare module "game/prototypes" {
   interface Creep {
@@ -46,8 +50,6 @@ let myCreeps: Creep[];
 let enemyCreeps: Creep[];
 let enemyFlag: Flag | undefined;
 
-const costMatrix = new CostMatrix();
-
 // This is the only exported function from the main module. It is called every tick.
 export function loop(): void {
   // We assign global variables here. They will be accessible throughout the tick, and even on the following ticks too.
@@ -56,12 +58,6 @@ export function loop(): void {
   myCreeps = getObjectsByPrototype(Creep).filter(i => i.my);
   enemyCreeps = getObjectsByPrototype(Creep).filter(i => !i.my);
   enemyFlag = getObjectsByPrototype(Flag).find(i => !i.my);
-
-  // verification that getObjectById works.
-  const creepForId = myCreeps[0];
-  if (creepForId) {
-    const creepFromGetObjectById = getObjectById(creepForId.id);
-  }
 
   // Notice how getTime is a global function, but not Game.time anymore
   if (getTime() % 10 === 0) {

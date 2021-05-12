@@ -1,6 +1,10 @@
 declare module "game/prototypes" {
   export type StructureConstant = STRUCTURE_TOWER | STRUCTURE_WALL;
 
+  export interface StructureJSON extends RoomObjectJSON {
+    hits: number;
+    hitsMax: number;
+  }
   export interface Structure<T extends StructureConstant = StructureConstant> extends RoomObject {
     readonly prototype: Structure;
 
@@ -34,20 +38,9 @@ declare module "game/prototypes" {
     //  * @param enabled Whether to enable notification or disable.
     //  */
     // notifyWhenAttacked(enabled: boolean): ScreepsReturnCode;
+
+    toJSON(): StructureJSON;
   }
 
   export const Structure: _Constructor<Structure>;
-
-  /**
-   * The base prototype for a structure that has an owner.
-   */
-  export interface OwnedStructure<T extends StructureConstant = StructureConstant> extends Structure<T> {
-    readonly prototype: OwnedStructure;
-
-    /**
-     * Whether this is your own structure. Walls and roads don't have this property as they are considered neutral structures.
-     */
-    my: boolean;
-  }
-  export const OwnedStructure: _Constructor<OwnedStructure>;
 }
