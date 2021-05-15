@@ -48,6 +48,14 @@ declare module "game/utils" {
    * Get linear range between two objects. a and b may be any object containing x and y properties.
    * @param a
    * @param b
+   * @deprecated alias for getRange
+   */
+  export function getDistance(a: RoomPosition, b: RoomPosition): number;
+
+  /**
+   * Get linear range between two objects. a and b may be any object containing x and y properties.
+   * @param a
+   * @param b
    */
   export function getRange(a: RoomPosition, b: RoomPosition): number;
 
