@@ -109,6 +109,7 @@ declare module "game/constants" {
 
   export type OBSTACLE_OBJECT_TYPES = AnyCreep | STRUCTURE_TOWER | STRUCTURE_WALL;
   export const HEAL_POWER: 12;
+  export const ATTACK_POWER: 30;
   export const OBSTACLE_OBJECT_TYPES: OBSTACLE_OBJECT_TYPES;
   export const RANGED_ATTACK_DISTANCE_RATE: any[];
   export const RANGED_ATTACK_POWER: 10;
@@ -130,6 +131,10 @@ declare module "game/constants" {
   export const TOWER_POWER_HEAL: 400;
   export const TOWER_POWER_REPAIR: 800;
   export const TOWER_RANGE: 50;
+
+  export const RESOURCE_ENERGY: "energy";
+
+  export type ResourceConstant = typeof RESOURCE_ENERGY;
 
   export type AnyCreep = Creep; /* | PowerCreep;*/
 }

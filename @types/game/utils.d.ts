@@ -48,8 +48,16 @@ declare module "game/utils" {
    * Get linear range between two objects. a and b may be any object containing x and y properties.
    * @param a
    * @param b
+   * @deprecated alias for getRange
    */
   export function getDistance(a: RoomPosition, b: RoomPosition): number;
+
+  /**
+   * Get linear range between two objects. a and b may be any object containing x and y properties.
+   * @param a
+   * @param b
+   */
+  export function getRange(a: RoomPosition, b: RoomPosition): number;
 
   /**
    * Get an integer representation of the terrain at the given position.
@@ -57,6 +65,31 @@ declare module "game/utils" {
    * @param pos pos should be an object containing x and y properties
    */
   export function getTerrainAt(pos: RoomPosition): TERRAIN_WALL | TERRAIN_SWAMP | 0;
+
+  /**
+   * Find all positions from the given positions array within the specified linear range.
+   * @param fromPos
+   * @param positions
+   * @param range
+   */
+  export function findInRange(fromPos: RoomPosition, positions: RoomPosition[], range: number): RoomPosition[];
+
+  /**
+   * Find a position with the shortest linear distance from the given position, or null otherwise.
+   * @param fromPos
+   * @param positions
+   */
+  export function findClosestByRange(fromPos: RoomPosition, positions: RoomPosition[]): RoomPosition;
+
+  /**
+   * Find a position with the shortest path from the given position, or null otherwise.
+   * @param fromPos
+   * @param positions
+   * @param opts object containing additional options:
+   * ignore: array (objects which should be treated as obstacles during the search)
+   * Any options supported by searchPath method
+   */
+  export function findClosestByPath(fromPos: RoomPosition, positions: RoomPosition[], opts?: FindPathOpts): RoomPosition;
 
   export interface HeapStatistics {
     total_heap_size: number;
