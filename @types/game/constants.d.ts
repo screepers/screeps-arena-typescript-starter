@@ -131,5 +131,9 @@ declare module "game/constants" {
   export const TOWER_POWER_REPAIR: 800;
   export const TOWER_RANGE: 50;
 
+  export const RESOURCE_ENERGY: "energy";
+
+  export type ResourceConstant = typeof RESOURCE_ENERGY;
+
   export type AnyCreep = Creep; /* | PowerCreep;*/
 }

@@ -1,5 +1,6 @@
 declare module "game/prototypes" {
-  import { AnyCreep, ScreepsReturnCode } from "game/constants";
+  import { AnyCreep, ResourceConstant, ScreepsReturnCode } from "game/constants";
+  import { Store } from "game/prototypes";
   export type STRUCTURE_TOWER = "tower";
   export interface StructureTower extends OwnedStructure<STRUCTURE_TOWER> {
     /**
@@ -15,12 +16,9 @@ declare module "game/prototypes" {
      */
     my: boolean;
     /**
-     * An object that contains a cargo of this structure. Towers can contain only energy.
+     * A Store object that contains a cargo of this structure. Towers can contain only energy.
      */
-    store: {
-      energy: number;
-      getCapacity(): number;
-    };
+    store: Store<ResourceConstant>;
     /**
      * Remotely attack any creep or structure.
      * The target has to be within 50 squares range of the tower.

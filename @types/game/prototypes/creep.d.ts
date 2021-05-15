@@ -1,4 +1,4 @@
-import { BodyPartConstant, CreepMoveReturnCode, DirectionConstant } from "game/constants";
+import { BodyPartConstant, CreepMoveReturnCode, DirectionConstant, ResourceConstant } from "game/constants";
 
 declare module "game/prototypes" {
   export interface Creep extends RoomObject {
@@ -25,6 +25,10 @@ declare module "game/prototypes" {
      *     hits: number (The remaining amount of hit points of this body part)
      */
     body: { type: BodyPartConstant; hits: number }[];
+    /**
+     * A Store object that contains cargo of this creep.
+     */
+    store: Store<ResourceConstant>;
     /**
      * Move the creep one square in the specified direction. direction must be one of the following constants:
      * @param direction
