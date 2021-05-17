@@ -1,5 +1,10 @@
 declare module "game/prototypes" {
-  export type StructureConstant = STRUCTURE_TOWER | STRUCTURE_WALL;
+  export type StructureConstant =
+    | STRUCTURE_TOWER
+    | STRUCTURE_WALL
+    | STRUCTURE_CONTAINER
+    | STRUCTURE_RAMPART
+    | STRUCTURE_SPAWN;
 
   export interface StructureJSON extends RoomObjectJSON {
     hits: number;

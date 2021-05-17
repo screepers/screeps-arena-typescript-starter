@@ -1,5 +1,5 @@
 declare module "game/constants" {
-  import { Creep, STRUCTURE_TOWER, STRUCTURE_WALL } from "game/prototypes";
+  import { Creep, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_WALL } from "game/prototypes";
   export type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
   export type MOVE = "move";
@@ -90,6 +90,7 @@ declare module "game/constants" {
   export type CreepMoveReturnCode = OK | ERR_NOT_OWNER | ERR_BUSY | ERR_TIRED | ERR_NO_BODYPART;
 
   export const CARRY_CAPACITY: 50;
+  export const CREEP_SPAWN_TIME = 3;
 
   export const ERR_BUSY: ERR_BUSY;
   export const ERR_FULL: ERR_FULL;
@@ -107,7 +108,7 @@ declare module "game/constants" {
   export const ERR_TIRED: ERR_TIRED;
   export const OK: OK;
 
-  export type OBSTACLE_OBJECT_TYPES = AnyCreep | STRUCTURE_TOWER | STRUCTURE_WALL;
+  export type OBSTACLE_OBJECT_TYPES = AnyCreep | STRUCTURE_TOWER | STRUCTURE_WALL | STRUCTURE_SPAWN;
   export const HEAL_POWER: 12;
   export const ATTACK_POWER: 30;
   export const OBSTACLE_OBJECT_TYPES: OBSTACLE_OBJECT_TYPES;
@@ -137,4 +138,18 @@ declare module "game/constants" {
   export type ResourceConstant = typeof RESOURCE_ENERGY;
 
   export type AnyCreep = Creep; /* | PowerCreep;*/
+
+  export const BODYPART_COST: { [index in BodyPartConstant]: number };
+  export const BODYPART_HITS: number;
+
+  export const DISMANTLE_COST = 0.005;
+  export const DISMANTLE_POWER = 50;
+  export const HARVEST_POWER = 2;
+  export const MAX_CREEP_SIZE = 50;
+
+  export const REPAIR_COST = 0.01;
+  export const REPAIR_POWER = 100;
+  // export const RESOURCES_ALL = ["energy"];
+  export const RESOURCE_DECAY = 1000;
+  export const SOURCE_ENERGY_REGEN = 10;
 }

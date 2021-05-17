@@ -1,8 +1,8 @@
 declare module "game/prototypes" {
   import { Store } from "game/prototypes";
-  import { BodyPartConstant, ResourceConstant } from "game/constants";
+  import { BodyPartConstant } from "game/constants";
   export type STRUCTURE_SPAWN = "spawn";
-  export interface StructureSpawn extends OwnedStructure<STRUCTURE_TOWER> {
+  export interface StructureSpawn extends OwnedStructure<STRUCTURE_SPAWN> {
     /**
      * A Store object that contains a cargo of this structure. Spawns can contain only energy.
      */
@@ -12,4 +12,7 @@ declare module "game/prototypes" {
      */
     spawnCreep(body: BodyPartConstant[]): Creep;
   }
+  interface StructureSpawnConstructor extends _Constructor<StructureSpawn>, _ConstructorById<StructureSpawn> {}
+
+  export const StructureSpawn: StructureSpawnConstructor;
 }
