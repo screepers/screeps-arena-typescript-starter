@@ -1,6 +1,6 @@
 declare module "game/prototypes" {
+  import { BodyPartConstant, ResourceConstant } from "game/constants";
   import { Store } from "game/prototypes";
-  import { BodyPartConstant } from "game/constants";
   export type STRUCTURE_SPAWN = "spawn";
   export interface StructureSpawn extends OwnedStructure<STRUCTURE_SPAWN> {
     /**

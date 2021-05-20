@@ -1,5 +1,13 @@
 declare module "game/constants" {
-  import { Creep, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_WALL } from "game/prototypes";
+  import {
+    Creep,
+    STRUCTURE_EXTENSION,
+    STRUCTURE_SPAWN,
+    STRUCTURE_TOWER,
+    STRUCTURE_WALL,
+    StructureExtension,
+    StructureTower
+  } from "game/prototypes";
   export type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
   export type MOVE = "move";
@@ -152,4 +160,7 @@ declare module "game/constants" {
   // export const RESOURCES_ALL = ["energy"];
   export const RESOURCE_DECAY = 1000;
   export const SOURCE_ENERGY_REGEN = 10;
+
+  export type BuildableStructureConstant = STRUCTURE_EXTENSION | STRUCTURE_TOWER;
+  export type BuildableStructure = StructureExtension | StructureTower;
 }
