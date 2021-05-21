@@ -1,6 +1,7 @@
 declare module "game/prototypes" {
   export type StructureConstant =
     | STRUCTURE_TOWER
+    | STRUCTURE_EXTENSION
     | STRUCTURE_WALL
     | STRUCTURE_CONTAINER
     | STRUCTURE_RAMPART
