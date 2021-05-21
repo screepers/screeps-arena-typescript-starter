@@ -1,5 +1,5 @@
 declare module "game/prototypes" {
-  import { BuildableStructureConstant } from "game/constants";
+  import { BuildableStructureConstant, ERR_NOT_OWNER, OK } from "game/constants";
   /**
    * A site of a structure which is currently under construction.
    */
@@ -21,7 +21,19 @@ declare module "game/prototypes" {
      * Remove the construction site.
      * @returns Result Code: OK, ERR_NOT_OWNER
      */
-    remove(): number;
+    remove(): OK | ERR_NOT_OWNER;
+
+    structurePrototypeNam: string; // BuildableStructureConstant? what we have there i snot really their prototype string though
+
+    // TODO: toJSON
+    // // toJSON() {
+    // //   return Object.assign(super.toJSON(), {
+    // //     progress: this.progress,
+    // //     progressTotal: this.progressTotal,
+    // //     my: this.my,
+    // //     structure: this.structure
+    // //   });
+    // // }
   }
 
   interface ConstructionSiteConstructor extends _Constructor<ConstructionSite>, _ConstructorById<ConstructionSite> {}
