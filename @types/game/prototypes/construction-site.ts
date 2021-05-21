@@ -23,7 +23,7 @@ declare module "game/prototypes" {
      */
     remove(): OK | ERR_NOT_OWNER;
 
-    structurePrototypeNam: string; // BuildableStructureConstant? what we have there i snot really their prototype string though
+    structurePrototypeNam: string; // BuildableStructureConstant? what we have there is not really their prototype string though
 
     // TODO: toJSON
     // // toJSON() {
