@@ -7,7 +7,14 @@ declare module "game/constants" {
     STRUCTURE_ROAD,
     STRUCTURE_SPAWN,
     STRUCTURE_TOWER,
-    STRUCTURE_WALL
+    STRUCTURE_WALL,
+    StructureContainer,
+    StructureExtension,
+    StructureRampart,
+    StructureRoad,
+    StructureSpawn,
+    StructureTower,
+    StructureWall
   } from "game/prototypes";
   export type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
@@ -139,6 +146,7 @@ declare module "game/constants" {
 
   export const TERRAIN_SWAMP: TERRAIN_SWAMP;
   export const TERRAIN_WALL: TERRAIN_WALL;
+
   export const TOWER_CAPACITY: number;
   export const TOWER_ENERGY_COST: number;
   export const TOWER_FALLOFF: number;
@@ -168,19 +176,11 @@ declare module "game/constants" {
   export const REPAIR_COST: number;
   export const REPAIR_POWER: number;
   // export const RESOURCES_ALL = ["energy"];
+
   export const RESOURCE_DECAY: number;
   export const SOURCE_ENERGY_REGEN: number;
 
   export const BUILD_POWER: number;
-
-  export const CONSTRUCTION_COST: {
-    StructureTower: number;
-    StructureExtension: number;
-    StructureRoad: number;
-    StructureContainer: number;
-    StructureWall: number;
-    StructureRampart: number;
-  };
 
   export const CONSTRUCTION_COST_ROAD_SWAMP_RATIO: number;
   export const CONSTRUCTION_COST_ROAD_WALL_RATIO: number;
@@ -191,17 +191,35 @@ declare module "game/constants" {
   export const EXTENSION_HITS: number;
   export const MAX_CONSTRUCTION_SITES: number;
 
-  export const RAMPART_HITS: 10000;
-  export const RAMPART_HITS_MAX: 10000;
-  export const ROAD_HITS: 500;
-  export type STRUCTURE_PROTOTYPES =
+  export const CONSTRUCTION_COST: {
+    StructureTower: number;
+    StructureExtension: number;
+    StructureRoad: number;
+    StructureContainer: number;
+    StructureWall: number;
+    StructureRampart: number;
+  };
+
+  export type BuildableStructureConstant =
     | STRUCTURE_TOWER
-    | STRUCTURE_SPAWN
-    | STRUCTURE_ROAD
-    | STRUCTURE_RAMPART
     | STRUCTURE_EXTENSION
+    | STRUCTURE_ROAD
+    | STRUCTURE_CONTAINER
     | STRUCTURE_WALL
-    | STRUCTURE_CONTAINER;
+    | STRUCTURE_RAMPART;
+
+  export type BuildableStructure =
+    | StructureTower
+    | StructureSpawn
+    | StructureRoad
+    | StructureRampart
+    | StructureExtension
+    | StructureWall
+    | StructureContainer;
+
+  export const RAMPART_HITS: number;
+  export const RAMPART_HITS_MAX: number;
+  export const ROAD_HITS: number;
 
   export const STRUCTURE_PROTOTYPES: {
     StructureTower: STRUCTURE_TOWER;

@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 declare module "game/utils" {
-  import { DirectionConstant, TERRAIN_SWAMP, TERRAIN_WALL } from "game/constants";
+  import { BuildableStructure, DirectionConstant, TERRAIN_SWAMP, TERRAIN_WALL } from "game/constants";
+  import { ConstructionSite, Id, RoomObject, RoomPosition, _Constructor } from "game/prototypes";
   import { FindPathOpts, PathStep } from "game/path-finder";
-  import { Id, RoomObject, RoomPosition, _Constructor } from "game/prototypes";
 
   /**
    * Get count of game ticks passed since the start of the game
@@ -89,7 +89,24 @@ declare module "game/utils" {
    * ignore: array (objects which should be treated as obstacles during the search)
    * Any options supported by searchPath method
    */
-  export function findClosestByPath(fromPos: RoomPosition, positions: RoomPosition[], opts?: FindPathOpts): RoomPosition;
+  export function findClosestByPath(
+    fromPos: RoomPosition,
+    positions: RoomPosition[],
+    opts?: FindPathOpts
+  ): RoomPosition;
+
+  /**
+   * Create new ConstructionSite at the specified location.
+   * @param x The X position.
+   * @param y The Y position.
+   * @param structurePrototype One of the following constants: StuctureExtension, StructureTower
+   * @returns Result Code: OK, ERR_INVALID_TARGET, ERR_INVALID_ARGS, ERR_RCL_NOT_ENOUGH
+   */
+  export function createConstructionSite(
+    x: number,
+    y: number,
+    structureType: _Constructor<BuildableStructure>
+  ): ConstructionSite;
 
   export interface HeapStatistics {
     total_heap_size: number;

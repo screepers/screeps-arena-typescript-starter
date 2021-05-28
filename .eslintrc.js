@@ -14,6 +14,9 @@ module.exports = {
     "plugin:import/warnings",
     "plugin:import/typescript"
   ],
+  ignorePatterns: [
+    "exported-game-constants.js"
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "tsconfig.json",
