@@ -5,30 +5,66 @@ export const BODYPART_HITS = 100;
 export const BOTTOM = 5;
 export const BOTTOM_LEFT = 6;
 export const BOTTOM_RIGHT = 4;
-export class BodyPart extends RoomObject {
-  get type() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].bodyPartType;
-  }
-
-  get ticksToDecay() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].decayTime - SystemStore.time;
-  }
-
-  toJSON() {
-    return Object.assign(super.toJSON(), {
-      type: this.type
-    });
-  }
-}
+export const BUILD_POWER = 5;
 export const CARRY = "carry";
 export const CARRY_CAPACITY = 50;
+export const CONSTRUCTION_COST = {
+  StructureTower: 5000,
+  StructureExtension: 200,
+  StructureRoad: 10,
+  StructureContainer: 100,
+  StructureWall: 100,
+  StructureRampart: 200
+};
+export const CONSTRUCTION_COST_ROAD_SWAMP_RATIO = 5;
+export const CONSTRUCTION_COST_ROAD_WALL_RATIO = 150;
+export const CONTAINER_CAPACITY = 2000;
+export const CONTAINER_HITS = 300;
 export const CREEP_SPAWN_TIME = 3;
+export class ConstructionSite extends RoomObject {
+  get progress() {
+    if (!this.exists) {
+      return;
+    }
+    return SystemStore.roomObjectsData[this.id].progress;
+  }
+  get progressTotal() {
+    if (!this.exists) {
+      return;
+    }
+    return SystemStore.roomObjectsData[this.id].progressTotal;
+  }
+  get structurePrototypeName() {
+    if (!this.exists) {
+      return;
+    }
+    return SystemStore.roomObjectsData[this.id].structurePrototypeName;
+  }
+  get my() {
+    if (!this.exists) {
+      return;
+    }
+    if (SystemStore.roomObjectsData[this.id].user) {
+      return SystemStore.roomObjectsData[this.id].user === SystemStore.playerName;
+    }
+    return undefined;
+  }
+  toJSON() {
+    return Object.assign(super.toJSON(), {
+      progress: this.progress,
+      progressTotal: this.progressTotal,
+      my: this.my,
+      structure: this.structure
+    });
+  }
+  remove() {
+    if (!this.my) {
+      return C.ERR_NOT_OWNER;
+    }
+    Intents.set(this.id, "remove", {});
+    return C.OK;
+  }
+}
 export class CostMatrix {
   constructor() {
     this._bits = new Uint8Array(SystemStore.arenaSize * SystemStore.arenaSize);
@@ -299,7 +335,7 @@ export class Creep extends RoomObject {
       return C.ERR_INVALID_TARGET;
     }
 
-    if (this.getDistanceTo(target) > 1) {
+    if (this.getRangeTo(target) > 1) {
       return C.ERR_NOT_IN_RANGE;
     }
 
@@ -356,7 +392,7 @@ export class Creep extends RoomObject {
       return C.ERR_INVALID_TARGET;
     }
 
-    if (this.getDistanceTo(target) > 1) {
+    if (this.getRangeTo(target) > 1) {
       return C.ERR_NOT_IN_RANGE;
     }
     if (!SystemStore.roomObjectsData[this.id].store || !SystemStore.roomObjectsData[this.id].store[resourceType]) {
@@ -409,7 +445,7 @@ export class Creep extends RoomObject {
     if (!target.energy) {
       return C.ERR_NOT_ENOUGH_RESOURCES;
     }
-    if (this.getDistanceTo(target) > 1) {
+    if (this.getRangeTo(target) > 1) {
       return C.ERR_NOT_IN_RANGE;
     }
 
@@ -463,11 +499,59 @@ export class Creep extends RoomObject {
     ) {
       return C.ERR_FULL;
     }
-    if (this.getDistanceTo(target) > 1) {
+    if (this.getRangeTo(target) > 1) {
       return C.ERR_NOT_IN_RANGE;
     }
 
     Intents.set(this.id, "pickup", { id: target.id });
+    return C.OK;
+  }
+
+  build(target) {
+    if (!this.exists) {
+      return;
+    }
+    if (!this.my) {
+      return C.ERR_NOT_OWNER;
+    }
+    if (this.spawning) {
+      return C.ERR_BUSY;
+    }
+    if (!this.body.some(p => p.type === C.WORK && p.hits > 0)) {
+      return C.ERR_NO_BODYPART;
+    }
+    if (!this.store.energy) {
+      return C.ERR_NOT_ENOUGH_RESOURCES;
+    }
+    if (!target || !target.id || !(target instanceof ConstructionSite)) {
+      return C.ERR_INVALID_TARGET;
+    }
+    if (this.getRangeTo(target) > 3) {
+      return C.ERR_NOT_IN_RANGE;
+    }
+
+    const objectsInTile = [];
+    const creepsInTile = [];
+
+    SystemStore.roomObjects.forEach(obj => {
+      if (obj.x == target.x && obj.y == target.y && C.OBSTACLE_OBJECT_TYPES.includes(obj.type)) {
+        if (obj.type == "creep") {
+          creepsInTile.push(obj);
+        } else {
+          objectsInTile.push(obj);
+        }
+      }
+    });
+    if (C.OBSTACLE_OBJECT_TYPES.includes(C.STRUCTURE_PROTOTYPES[target.structurePrototypeName])) {
+      if (objectsInTile.length > 0) {
+        return C.ERR_INVALID_TARGET;
+      }
+      if (creepsInTile.length > 0) {
+        return C.ERR_INVALID_TARGET;
+      }
+    }
+
+    Intents.set(this.id, "build", { id: target.id, x: target.x, y: target.y });
     return C.OK;
   }
 }
@@ -487,30 +571,16 @@ export const ERR_NOT_OWNER = -1;
 export const ERR_NO_BODYPART = -12;
 export const ERR_NO_PATH = -2;
 export const ERR_TIRED = -11;
-export class Flag extends RoomObject {
-  get my() {
-    if (!this.exists) {
-      return;
-    }
-    if (SystemStore.roomObjectsData[this.id].user) {
-      return SystemStore.roomObjectsData[this.id].user === SystemStore.playerName;
-    }
-    return undefined;
-  }
-
-  toJSON() {
-    return Object.assign(super.toJSON(), {
-      my: this.my
-    });
-  }
-}
+export const EXTENSION_ENERGY_CAPACITY = 100;
+export const EXTENSION_HITS = 100;
 export const HARVEST_POWER = 2;
 export const HEAL = "heal";
 export const HEAL_POWER = 12;
 export const LEFT = 7;
+export const MAX_CONSTRUCTION_SITES = 10;
 export const MAX_CREEP_SIZE = 50;
 export const MOVE = "move";
-export const OBSTACLE_OBJECT_TYPES = ["creep", "tower", "constructedWall", "spawn"];
+export const OBSTACLE_OBJECT_TYPES = ["creep", "tower", "constructedWall", "spawn", "extension", "link"];
 export const OK = 0;
 export class OwnedStructure extends Structure {
   get my() {
@@ -529,6 +599,8 @@ export class OwnedStructure extends Structure {
     });
   }
 }
+export const RAMPART_HITS = 10000;
+export const RAMPART_HITS_MAX = 10000;
 export const RANGED_ATTACK = "ranged_attack";
 export const RANGED_ATTACK_DISTANCE_RATE = { 0: 1, 1: 1, 2: 0.4, 3: 0.1 };
 export const RANGED_ATTACK_POWER = 10;
@@ -539,6 +611,7 @@ export const RESOURCES_ALL = ["energy"];
 export const RESOURCE_DECAY = 1000;
 export const RESOURCE_ENERGY = "energy";
 export const RIGHT = 3;
+export const ROAD_HITS = 500;
 export const ROAD_WEAROUT = 1;
 export class Resource extends RoomObject {
   get amount() {
@@ -618,6 +691,15 @@ export class RoomObject {
   }
 }
 export const SOURCE_ENERGY_REGEN = 10;
+export const STRUCTURE_PROTOTYPES = {
+  StructureTower: "tower",
+  StructureSpawn: "spawn",
+  StructureRoad: "road",
+  StructureRampart: "rampart",
+  StructureExtension: "extension",
+  StructureWall: "constructedWall",
+  StructureContainer: "container"
+};
 export class Source extends RoomObject {
   get energy() {
     if (!this.exists) {
@@ -665,7 +747,13 @@ export class StructureContainer extends OwnedStructure {
     return new Store(SystemStore.roomObjectsData[this.id]);
   }
 }
+export class StructureExtension extends OwnedStructure {
+  get store() {
+    return new Store(SystemStore.roomObjectsData[this.id]);
+  }
+}
 export class StructureRampart extends OwnedStructure {}
+export class StructureRoad extends Structure {}
 export class StructureSpawn extends OwnedStructure {
   get store() {
     return new Store(SystemStore.roomObjectsData[this.id]);
@@ -690,7 +778,10 @@ export class StructureSpawn extends OwnedStructure {
       }
     }
 
-    if (SystemStore.roomObjectsData[this.id].store.energy < body.reduce((sum, i) => sum + C.BODYPART_COST[i], 0)) {
+    const energyAvailable = Object.values(SystemStore.roomObjectsData)
+      .filter(i => (i.user === SystemStore.roomObjectsData[this.id].user && i.type == "spawn") || i.type == "extension")
+      .reduce((sum, i) => sum + (i.store.energy || 0), 0);
+    if (energyAvailable < body.reduce((sum, i) => sum + C.BODYPART_COST[i], 0)) {
       return C.ERR_NOT_ENOUGH_ENERGY;
     }
 
@@ -704,6 +795,10 @@ export class StructureTower extends OwnedStructure {
     return new Store(SystemStore.roomObjectsData[this.id]);
   }
 
+  get cooldown() {
+    return SystemStore.roomObjectsData[this.id].cooldown || 0;
+  }
+
   attack(target) {
     if (!this.exists) {
       return;
@@ -711,6 +806,10 @@ export class StructureTower extends OwnedStructure {
 
     if (!this.my) {
       return C.ERR_NOT_OWNER;
+    }
+
+    if (this.cooldown > 0) {
+      return C.ERR_TIRED;
     }
 
     if (!target || !target.exists || !(target instanceof RoomObject)) {
@@ -734,6 +833,10 @@ export class StructureTower extends OwnedStructure {
       return C.ERR_NOT_OWNER;
     }
 
+    if (this.cooldown > 0) {
+      return C.ERR_TIRED;
+    }
+
     if (!target || !target.exists || !(target instanceof RoomObject)) {
       return C.ERR_INVALID_TARGET;
     }
@@ -753,7 +856,8 @@ export const TOP = 1;
 export const TOP_LEFT = 8;
 export const TOP_RIGHT = 2;
 export const TOUGH = "tough";
-export const TOWER_CAPACITY = 1000;
+export const TOWER_CAPACITY = 50;
+export const TOWER_COOLDOWN = 10;
 export const TOWER_ENERGY_COST = 10;
 export const TOWER_FALLOFF = 0.75;
 export const TOWER_FALLOFF_RANGE = 20;
@@ -763,8 +867,10 @@ export const TOWER_POWER_ATTACK = 600;
 export const TOWER_POWER_HEAL = 400;
 export const TOWER_POWER_REPAIR = 800;
 export const TOWER_RANGE = 50;
+export const WALL_HITS = 10000;
+export const WALL_HITS_MAX = 10000;
 export const WORK = "work";
-export const arenaInfo = { name: "Capture the Flag", level: 1, season: "alpha" };
+export const arenaInfo = { name: "Spawn and Swamp", level: 1, season: "alpha" };
 export const constants = {
   ATTACK: "attack",
   ATTACK_POWER: 30,
@@ -773,8 +879,21 @@ export const constants = {
   BOTTOM: 5,
   BOTTOM_LEFT: 6,
   BOTTOM_RIGHT: 4,
+  BUILD_POWER: 5,
   CARRY: "carry",
   CARRY_CAPACITY: 50,
+  CONSTRUCTION_COST: {
+    StructureTower: 5000,
+    StructureExtension: 200,
+    StructureRoad: 10,
+    StructureContainer: 100,
+    StructureWall: 100,
+    StructureRampart: 200
+  },
+  CONSTRUCTION_COST_ROAD_SWAMP_RATIO: 5,
+  CONSTRUCTION_COST_ROAD_WALL_RATIO: 150,
+  CONTAINER_CAPACITY: 2000,
+  CONTAINER_HITS: 300,
   CREEP_SPAWN_TIME: 3,
   DISMANTLE_COST: 0.005,
   DISMANTLE_POWER: 50,
@@ -792,14 +911,19 @@ export const constants = {
   ERR_NO_BODYPART: -12,
   ERR_NO_PATH: -2,
   ERR_TIRED: -11,
+  EXTENSION_ENERGY_CAPACITY: 100,
+  EXTENSION_HITS: 100,
   HARVEST_POWER: 2,
   HEAL: "heal",
   HEAL_POWER: 12,
   LEFT: 7,
+  MAX_CONSTRUCTION_SITES: 10,
   MAX_CREEP_SIZE: 50,
   MOVE: "move",
-  OBSTACLE_OBJECT_TYPES: ["creep", "tower", "constructedWall", "spawn"],
+  OBSTACLE_OBJECT_TYPES: ["creep", "tower", "constructedWall", "spawn", "extension", "link"],
   OK: 0,
+  RAMPART_HITS: 10000,
+  RAMPART_HITS_MAX: 10000,
   RANGED_ATTACK: "ranged_attack",
   RANGED_ATTACK_DISTANCE_RATE: { 0: 1, 1: 1, 2: 0.4, 3: 0.1 },
   RANGED_ATTACK_POWER: 10,
@@ -810,15 +934,26 @@ export const constants = {
   RESOURCE_DECAY: 1000,
   RESOURCE_ENERGY: "energy",
   RIGHT: 3,
+  ROAD_HITS: 500,
   ROAD_WEAROUT: 1,
   SOURCE_ENERGY_REGEN: 10,
+  STRUCTURE_PROTOTYPES: {
+    StructureTower: "tower",
+    StructureSpawn: "spawn",
+    StructureRoad: "road",
+    StructureRampart: "rampart",
+    StructureExtension: "extension",
+    StructureWall: "constructedWall",
+    StructureContainer: "container"
+  },
   TERRAIN_SWAMP: 2,
   TERRAIN_WALL: 1,
   TOP: 1,
   TOP_LEFT: 8,
   TOP_RIGHT: 2,
   TOUGH: "tough",
-  TOWER_CAPACITY: 1000,
+  TOWER_CAPACITY: 50,
+  TOWER_COOLDOWN: 10,
   TOWER_ENERGY_COST: 10,
   TOWER_FALLOFF: 0.75,
   TOWER_FALLOFF_RANGE: 20,
@@ -828,8 +963,59 @@ export const constants = {
   TOWER_POWER_HEAL: 400,
   TOWER_POWER_REPAIR: 800,
   TOWER_RANGE: 50,
+  WALL_HITS: 10000,
+  WALL_HITS_MAX: 10000,
   WORK: "work"
 };
+export function createConstructionSite(x, y, structurePrototype) {
+  if (
+    x === undefined ||
+    y === undefined ||
+    x <= 0 ||
+    x >= SystemStore.arenaSize - 1 ||
+    y <= 0 ||
+    y >= SystemStore.arenaSize - 1
+  ) {
+    return C.ERR_INVALID_ARGS;
+  }
+  if (!Object.values(prototypes).includes(structurePrototype)) {
+    return C.ERR_INVALID_ARGS;
+  }
+  if (!C.CONSTRUCTION_COST[structurePrototype.prototype.constructor.name]) {
+    return C.ERR_INVALID_ARGS;
+  }
+  if (
+    !checkConstructionSite(
+      structurePrototype.prototype.constructor.name,
+      x,
+      y,
+      SystemStore.roomObjects,
+      SystemStore.terrain,
+      SystemStore.arenaSize
+    )
+  ) {
+    return C.ERR_INVALID_TARGET;
+  }
+
+  if (
+    SystemStore.roomObjects.filter(i => i.type === "constructionSite").length + SystemStore.createdConstructionSites >=
+    C.MAX_CONSTRUCTION_SITES
+  ) {
+    return C.ERR_FULL;
+  }
+
+  SystemStore.createdConstructionSites++;
+
+  let site = new prototypes.ConstructionSite();
+  Intents.pushByName("global", "createConstructionSite", {
+    x,
+    y,
+    structurePrototypeName: structurePrototype.prototype.constructor.name,
+    createRequest: getCreateRequest(site)
+  });
+
+  return site;
+}
 export function findClosestByPath(fromPos, positions, opts = {}) {
   if (!positions || !positions.length) {
     return null;
@@ -954,7 +1140,6 @@ export function getTime() {
   return SystemStore.time;
 }
 export const pathFinder = {};
-export const prototypes = {};
 export function searchPath(origin, goal, options) {
   // Options
   options = options || {};
