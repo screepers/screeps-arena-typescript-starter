@@ -6,30 +6,16 @@ export const BOTTOM = 5;
 export const BOTTOM_LEFT = 6;
 export const BOTTOM_RIGHT = 4;
 export const BUILD_POWER = 5;
-export class BodyPart extends RoomObject {
-  get type() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].bodyPartType;
-  }
-
-  get ticksToDecay() {
-    if (!this.exists) {
-      return;
-    }
-    return SystemStore.roomObjectsData[this.id].decayTime - SystemStore.time;
-  }
-
-  toJSON() {
-    return Object.assign(super.toJSON(), {
-      type: this.type
-    });
-  }
-}
 export const CARRY = "carry";
 export const CARRY_CAPACITY = 50;
-export const CONSTRUCTION_COST = { StructureTower: 5000, StructureExtension: 300 };
+export const CONSTRUCTION_COST = {
+  StructureTower: 5000,
+  StructureExtension: 200,
+  StructureRoad: 10,
+  StructureContainer: 100,
+  StructureWall: 100,
+  StructureRampart: 200
+};
 export const CONSTRUCTION_COST_ROAD_SWAMP_RATIO = 5;
 export const CONSTRUCTION_COST_ROAD_WALL_RATIO = 150;
 export const CONTAINER_CAPACITY = 2000;
@@ -48,11 +34,11 @@ export class ConstructionSite extends RoomObject {
     }
     return SystemStore.roomObjectsData[this.id].progressTotal;
   }
-  get structurePrototypeNam() {
+  get structurePrototypeName() {
     if (!this.exists) {
       return;
     }
-    return SystemStore.roomObjectsData[this.id].structurePrototypeNam;
+    return SystemStore.roomObjectsData[this.id].structurePrototypeName;
   }
   get my() {
     if (!this.exists) {
@@ -585,25 +571,8 @@ export const ERR_NOT_OWNER = -1;
 export const ERR_NO_BODYPART = -12;
 export const ERR_NO_PATH = -2;
 export const ERR_TIRED = -11;
-export const EXTENSION_ENERGY_CAPACITY = 50;
+export const EXTENSION_ENERGY_CAPACITY = 100;
 export const EXTENSION_HITS = 100;
-export class Flag extends RoomObject {
-  get my() {
-    if (!this.exists) {
-      return;
-    }
-    if (SystemStore.roomObjectsData[this.id].user) {
-      return SystemStore.roomObjectsData[this.id].user === SystemStore.playerName;
-    }
-    return undefined;
-  }
-
-  toJSON() {
-    return Object.assign(super.toJSON(), {
-      my: this.my
-    });
-  }
-}
 export const HARVEST_POWER = 2;
 export const HEAL = "heal";
 export const HEAL_POWER = 12;
@@ -630,8 +599,8 @@ export class OwnedStructure extends Structure {
     });
   }
 }
-export const RAMPART_HITS = 1;
-export const RAMPART_HITS_MAX = 100000;
+export const RAMPART_HITS = 10000;
+export const RAMPART_HITS_MAX = 10000;
 export const RANGED_ATTACK = "ranged_attack";
 export const RANGED_ATTACK_DISTANCE_RATE = { 0: 1, 1: 1, 2: 0.4, 3: 0.1 };
 export const RANGED_ATTACK_POWER = 10;
@@ -784,6 +753,7 @@ export class StructureExtension extends OwnedStructure {
   }
 }
 export class StructureRampart extends OwnedStructure {}
+export class StructureRoad extends Structure {}
 export class StructureSpawn extends OwnedStructure {
   get store() {
     return new Store(SystemStore.roomObjectsData[this.id]);
@@ -825,6 +795,10 @@ export class StructureTower extends OwnedStructure {
     return new Store(SystemStore.roomObjectsData[this.id]);
   }
 
+  get cooldown() {
+    return SystemStore.roomObjectsData[this.id].cooldown || 0;
+  }
+
   attack(target) {
     if (!this.exists) {
       return;
@@ -832,6 +806,10 @@ export class StructureTower extends OwnedStructure {
 
     if (!this.my) {
       return C.ERR_NOT_OWNER;
+    }
+
+    if (this.cooldown > 0) {
+      return C.ERR_TIRED;
     }
 
     if (!target || !target.exists || !(target instanceof RoomObject)) {
@@ -855,6 +833,10 @@ export class StructureTower extends OwnedStructure {
       return C.ERR_NOT_OWNER;
     }
 
+    if (this.cooldown > 0) {
+      return C.ERR_TIRED;
+    }
+
     if (!target || !target.exists || !(target instanceof RoomObject)) {
       return C.ERR_INVALID_TARGET;
     }
@@ -875,6 +857,7 @@ export const TOP_LEFT = 8;
 export const TOP_RIGHT = 2;
 export const TOUGH = "tough";
 export const TOWER_CAPACITY = 50;
+export const TOWER_COOLDOWN = 10;
 export const TOWER_ENERGY_COST = 10;
 export const TOWER_FALLOFF = 0.75;
 export const TOWER_FALLOFF_RANGE = 20;
@@ -884,10 +867,10 @@ export const TOWER_POWER_ATTACK = 600;
 export const TOWER_POWER_HEAL = 400;
 export const TOWER_POWER_REPAIR = 800;
 export const TOWER_RANGE = 50;
-export const WALL_HITS = 1;
-export const WALL_HITS_MAX = 100000;
+export const WALL_HITS = 10000;
+export const WALL_HITS_MAX = 10000;
 export const WORK = "work";
-export const arenaInfo = { name: "Capture the Flag", level: 1, season: "alpha" };
+export const arenaInfo = { name: "Spawn and Swamp", level: 1, season: "alpha" };
 export const constants = {
   ATTACK: "attack",
   ATTACK_POWER: 30,
@@ -899,7 +882,14 @@ export const constants = {
   BUILD_POWER: 5,
   CARRY: "carry",
   CARRY_CAPACITY: 50,
-  CONSTRUCTION_COST: { StructureTower: 5000, StructureExtension: 300 },
+  CONSTRUCTION_COST: {
+    StructureTower: 5000,
+    StructureExtension: 200,
+    StructureRoad: 10,
+    StructureContainer: 100,
+    StructureWall: 100,
+    StructureRampart: 200
+  },
   CONSTRUCTION_COST_ROAD_SWAMP_RATIO: 5,
   CONSTRUCTION_COST_ROAD_WALL_RATIO: 150,
   CONTAINER_CAPACITY: 2000,
@@ -921,7 +911,7 @@ export const constants = {
   ERR_NO_BODYPART: -12,
   ERR_NO_PATH: -2,
   ERR_TIRED: -11,
-  EXTENSION_ENERGY_CAPACITY: 50,
+  EXTENSION_ENERGY_CAPACITY: 100,
   EXTENSION_HITS: 100,
   HARVEST_POWER: 2,
   HEAL: "heal",
@@ -932,8 +922,8 @@ export const constants = {
   MOVE: "move",
   OBSTACLE_OBJECT_TYPES: ["creep", "tower", "constructedWall", "spawn", "extension", "link"],
   OK: 0,
-  RAMPART_HITS: 1,
-  RAMPART_HITS_MAX: 100000,
+  RAMPART_HITS: 10000,
+  RAMPART_HITS_MAX: 10000,
   RANGED_ATTACK: "ranged_attack",
   RANGED_ATTACK_DISTANCE_RATE: { 0: 1, 1: 1, 2: 0.4, 3: 0.1 },
   RANGED_ATTACK_POWER: 10,
@@ -963,6 +953,7 @@ export const constants = {
   TOP_RIGHT: 2,
   TOUGH: "tough",
   TOWER_CAPACITY: 50,
+  TOWER_COOLDOWN: 10,
   TOWER_ENERGY_COST: 10,
   TOWER_FALLOFF: 0.75,
   TOWER_FALLOFF_RANGE: 20,
@@ -972,8 +963,8 @@ export const constants = {
   TOWER_POWER_HEAL: 400,
   TOWER_POWER_REPAIR: 800,
   TOWER_RANGE: 50,
-  WALL_HITS: 1,
-  WALL_HITS_MAX: 100000,
+  WALL_HITS: 10000,
+  WALL_HITS_MAX: 10000,
   WORK: "work"
 };
 export function createConstructionSite(x, y, structurePrototype) {
@@ -1149,7 +1140,6 @@ export function getTime() {
   return SystemStore.time;
 }
 export const pathFinder = {};
-export const prototypes = {};
 export function searchPath(origin, goal, options) {
   // Options
   options = options || {};

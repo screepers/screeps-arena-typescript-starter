@@ -2,6 +2,7 @@ declare module "game/prototypes" {
   import { AnyCreep, ResourceConstant, ScreepsReturnCode } from "game/constants";
   import { Store } from "game/prototypes";
   export type STRUCTURE_TOWER = "tower";
+  export const STRUCTURE_TOWER: STRUCTURE_TOWER;
   export interface StructureTower extends OwnedStructure<STRUCTURE_TOWER> {
     /**
      * The current amount of hit points of the tower.
@@ -19,6 +20,11 @@ declare module "game/prototypes" {
      * A Store object that contains a cargo of this structure. Towers can contain only energy.
      */
     store: Store<ResourceConstant>;
+
+    /**
+     * 10-ticks cooldown for towers (Tower.cooldown). Exception: towers in CTF can shoot each tick.
+     */
+    cooldown: number;
     /**
      * Remotely attack any creep or structure.
      * The target has to be within 50 squares range of the tower.

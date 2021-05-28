@@ -1,12 +1,20 @@
 declare module "game/constants" {
   import {
     Creep,
+    STRUCTURE_CONTAINER,
     STRUCTURE_EXTENSION,
+    STRUCTURE_RAMPART,
+    STRUCTURE_ROAD,
     STRUCTURE_SPAWN,
     STRUCTURE_TOWER,
     STRUCTURE_WALL,
+    StructureContainer,
     StructureExtension,
-    StructureTower
+    StructureRampart,
+    StructureRoad,
+    StructureSpawn,
+    StructureTower,
+    StructureWall
   } from "game/prototypes";
   export type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
@@ -97,8 +105,8 @@ declare module "game/constants" {
 
   export type CreepMoveReturnCode = OK | ERR_NOT_OWNER | ERR_BUSY | ERR_TIRED | ERR_NO_BODYPART;
 
-  export const CARRY_CAPACITY: 50;
-  export const CREEP_SPAWN_TIME = 3;
+  export const CARRY_CAPACITY: number;
+  export const CREEP_SPAWN_TIME: number;
 
   export const ERR_BUSY: ERR_BUSY;
   export const ERR_FULL: ERR_FULL;
@@ -123,31 +131,33 @@ declare module "game/constants" {
     | STRUCTURE_SPAWN
     | STRUCTURE_EXTENSION;
   // | STRUCTURE_LINK
-  export const HEAL_POWER: 12;
-  export const ATTACK_POWER: 30;
+
   export const OBSTACLE_OBJECT_TYPES: OBSTACLE_OBJECT_TYPES;
   export const RANGED_ATTACK_DISTANCE_RATE: any[];
-  export const RANGED_ATTACK_POWER: 10;
-  export const RANGED_HEAL_POWER: 4;
-  export const ROAD_WEAROUT: 1;
+  export const RANGED_ATTACK_POWER: number;
+  export const HEAL_POWER: number;
+  export const ATTACK_POWER: number;
+  export const RANGED_HEAL_POWER: number;
+
+  export const ROAD_WEAROUT: number;
 
   export type TERRAIN_SWAMP = 2;
   export type TERRAIN_WALL = 1;
 
   export const TERRAIN_SWAMP: TERRAIN_SWAMP;
   export const TERRAIN_WALL: TERRAIN_WALL;
-  export const TOWER_CAPACITY: 50;
-  export const TOWER_ENERGY_COST: 10;
-  export const TOWER_FALLOFF: 0.75;
-  export const TOWER_FALLOFF_RANGE: 20;
-  export const TOWER_HITS: 3000;
-  export const TOWER_OPTIMAL_RANGE: 5;
-  export const TOWER_POWER_ATTACK: 600;
-  export const TOWER_POWER_HEAL: 400;
-  export const TOWER_POWER_REPAIR: 800;
-  export const TOWER_RANGE: 50;
-  export const WALL_HITS = 1;
-  export const WALL_HITS_MAX = 100000;
+
+  export const TOWER_CAPACITY: number;
+  export const TOWER_ENERGY_COST: number;
+  export const TOWER_FALLOFF: number;
+  export const TOWER_FALLOFF_RANGE: number;
+  export const TOWER_HITS: number;
+  export const TOWER_OPTIMAL_RANGE: number;
+  export const TOWER_POWER_ATTACK: number;
+  export const TOWER_POWER_HEAL: number;
+  export const TOWER_POWER_REPAIR: number;
+  export const TOWER_RANGE: number;
+  export const TOWER_COOLDOWN: number;
 
   export const RESOURCE_ENERGY: "energy";
 
@@ -158,43 +168,69 @@ declare module "game/constants" {
   export const BODYPART_COST: { [index in BodyPartConstant]: number };
   export const BODYPART_HITS: number;
 
-  export const DISMANTLE_COST = 0.005;
-  export const DISMANTLE_POWER = 50;
-  export const HARVEST_POWER = 2;
-  export const MAX_CREEP_SIZE = 50;
+  export const DISMANTLE_COST: number;
+  export const DISMANTLE_POWER: number;
+  export const HARVEST_POWER: number;
+  export const MAX_CREEP_SIZE: number;
 
-  export const REPAIR_COST = 0.01;
-  export const REPAIR_POWER = 100;
+  export const REPAIR_COST: number;
+  export const REPAIR_POWER: number;
   // export const RESOURCES_ALL = ["energy"];
-  export const RESOURCE_DECAY = 1000;
-  export const SOURCE_ENERGY_REGEN = 10;
 
-  export const BUILD_POWER = 5;
+  export const RESOURCE_DECAY: number;
+  export const SOURCE_ENERGY_REGEN: number;
 
-  export const CONSTRUCTION_COST: { [index in BuildableStructureConstant]: number }; // = { StructureTower: 5000, StructureExtension: 300 };
-  export const CONSTRUCTION_COST_ROAD_SWAMP_RATIO = 5;
-  export const CONSTRUCTION_COST_ROAD_WALL_RATIO = 150;
-  export const CONTAINER_CAPACITY = 2000;
-  export const CONTAINER_HITS = 300;
+  export const BUILD_POWER: number;
 
-  export type BuildableStructureConstant = STRUCTURE_EXTENSION | STRUCTURE_TOWER;
-  export type BuildableStructure = StructureExtension | StructureTower;
+  export const CONSTRUCTION_COST_ROAD_SWAMP_RATIO: number;
+  export const CONSTRUCTION_COST_ROAD_WALL_RATIO: number;
+  export const CONTAINER_CAPACITY: number;
+  export const CONTAINER_HITS: number;
 
-  export const EXTENSION_ENERGY_CAPACITY = 50;
-  export const EXTENSION_HITS = 100;
-  export const MAX_CONSTRUCTION_SITES = 10;
+  export const EXTENSION_ENERGY_CAPACITY: number;
+  export const EXTENSION_HITS: number;
+  export const MAX_CONSTRUCTION_SITES: number;
 
-  export const RAMPART_HITS = 1;
-  export const RAMPART_HITS_MAX = 100000;
-  export const ROAD_HITS = 500;
+  export const CONSTRUCTION_COST: {
+    StructureTower: number;
+    StructureExtension: number;
+    StructureRoad: number;
+    StructureContainer: number;
+    StructureWall: number;
+    StructureRampart: number;
+  };
 
-  // export const STRUCTURE_PROTOTYPES = {
-  //   StructureTower: "tower",
-  //   StructureSpawn: "spawn",
-  //   StructureRoad: "road",
-  //   StructureRampart: "rampart",
-  //   StructureExtension: "extension",
-  //   StructureWall: "constructedWall",
-  //   StructureContainer: "container"
-  // };
+  export type BuildableStructureConstant =
+    | STRUCTURE_TOWER
+    | STRUCTURE_EXTENSION
+    | STRUCTURE_ROAD
+    | STRUCTURE_CONTAINER
+    | STRUCTURE_WALL
+    | STRUCTURE_RAMPART;
+
+  export type BuildableStructure =
+    | StructureTower
+    | StructureSpawn
+    | StructureRoad
+    | StructureRampart
+    | StructureExtension
+    | StructureWall
+    | StructureContainer;
+
+  export const RAMPART_HITS: number;
+  export const RAMPART_HITS_MAX: number;
+  export const ROAD_HITS: number;
+
+  export const STRUCTURE_PROTOTYPES: {
+    StructureTower: STRUCTURE_TOWER;
+    StructureSpawn: STRUCTURE_SPAWN;
+    StructureRoad: STRUCTURE_ROAD;
+    StructureRampart: STRUCTURE_RAMPART;
+    StructureExtension: STRUCTURE_EXTENSION;
+    StructureWall: STRUCTURE_WALL;
+    StructureContainer: STRUCTURE_CONTAINER;
+  };
+
+  export const WALL_HITS: number;
+  export const WALL_HITS_MAX: number;
 }

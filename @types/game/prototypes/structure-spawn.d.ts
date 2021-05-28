@@ -2,6 +2,7 @@ declare module "game/prototypes" {
   import { BodyPartConstant, ResourceConstant } from "game/constants";
   import { Store } from "game/prototypes";
   export type STRUCTURE_SPAWN = "spawn";
+  export const STRUCTURE_SPAWN: STRUCTURE_SPAWN;
   export interface StructureSpawn extends OwnedStructure<STRUCTURE_SPAWN> {
     /**
      * A Store object that contains a cargo of this structure. Spawns can contain only energy.

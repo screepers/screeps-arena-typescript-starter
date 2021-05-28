@@ -17,4 +17,6 @@ declare module "game" {
      */
     season: string;
   };
+
+  export function createConstructionSite(x: number, y: number, structurePrototype: STRUCTURE_PROTOTYPES);
 }
