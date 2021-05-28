@@ -14,6 +14,7 @@ declare module "game/prototypes" {
     ERR_NOT_OWNER,
     ERR_NO_BODYPART,
     ERR_NO_PATH,
+    ERR_RCL_NOT_ENOUGH,
     OK,
     ResourceConstant,
     ScreepsReturnCode
@@ -154,6 +155,17 @@ declare module "game/prototypes" {
      * @param target The target object to be picked up.
      */
     pickup(target: Resource): CreepActionReturnCode | ERR_FULL;
+
+    /**
+     * Build a structure at the target construction site using carried energy.
+     * Needs WORK and CARRY body parts.
+     *
+     * The target has to be within 3 squares range of the creep.
+     *
+     * @param target The target object to be attacked.
+     * @returns Result Code: OK, ERR_NOT_OWNER, ERR_BUSY, ERR_NOT_ENOUGH_RESOURCES, ERR_INVALID_TARGET, ERR_NOT_IN_RANGE, ERR_NO_BODYPART, ERR_RCL_NOT_ENOUGH
+     */
+    build(target: ConstructionSite): CreepActionReturnCode | ERR_NOT_ENOUGH_RESOURCES | ERR_RCL_NOT_ENOUGH;
   }
 
   interface CreepConstructor extends _Constructor<Creep>, _ConstructorById<Creep> {}

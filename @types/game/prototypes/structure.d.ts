@@ -4,7 +4,9 @@ declare module "game/prototypes" {
     | STRUCTURE_WALL
     | STRUCTURE_CONTAINER
     | STRUCTURE_RAMPART
-    | STRUCTURE_SPAWN;
+    | STRUCTURE_SPAWN
+    | STRUCTURE_ROAD
+    | STRUCTURE_EXTENSION;
 
   export interface StructureJSON extends RoomObjectJSON {
     hits: number;
