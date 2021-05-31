@@ -1,6 +1,6 @@
 declare module "game/prototypes" {
   export type STRUCTURE_WALL = "constructedWall";
-  export const STRUCTURE_WALL: STRUCTURE_WALL;
+  // export const STRUCTURE_WALL: STRUCTURE_WALL;
   export interface StructureWall extends Structure<STRUCTURE_WALL> {
     readonly prototype: StructureWall;
   }

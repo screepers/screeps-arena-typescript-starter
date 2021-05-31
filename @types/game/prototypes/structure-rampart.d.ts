@@ -1,6 +1,6 @@
 declare module "game/prototypes" {
   export type STRUCTURE_RAMPART = "rampart";
-  export const STRUCTURE_RAMPART: STRUCTURE_RAMPART;
+  // export const STRUCTURE_RAMPART: STRUCTURE_RAMPART;
 
   export interface StructureRampart extends OwnedStructure<STRUCTURE_RAMPART> {}
 
