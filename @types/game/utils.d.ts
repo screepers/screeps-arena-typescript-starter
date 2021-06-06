@@ -9,7 +9,7 @@ declare module "game/utils" {
     TERRAIN_SWAMP,
     TERRAIN_WALL
   } from "game/constants";
-  import { ConstructionSite, Id, RoomObject, RoomPosition, _Constructor } from "game/prototypes";
+  import { ConstructionSite, GameObject, Id, RoomPosition, _Constructor } from "game/prototypes";
   import { FindPathOpts, PathStep } from "game/path-finder";
 
   /**
@@ -24,7 +24,7 @@ declare module "game/utils" {
   /**
    * Get all objects in the game.
    */
-  export function getObjects(): RoomObject[];
+  export function getObjects(): GameObject[];
   /**
    * Get all objects in the game with the specified prototype, for example, all creeps
    * @param prototype

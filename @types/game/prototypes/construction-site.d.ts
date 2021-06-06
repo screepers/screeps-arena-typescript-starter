@@ -1,6 +1,6 @@
 declare module "game/prototypes" {
   import { ERR_NOT_OWNER, OK, STRUCTURE_PROTOTYPES } from "game/constants";
-  export interface ConstructionSite extends RoomObject {
+  export interface ConstructionSite extends GameObject {
     readonly prototype: ConstructionSite;
 
     /**

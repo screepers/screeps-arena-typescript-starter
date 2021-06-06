@@ -20,7 +20,7 @@ declare module "game/prototypes" {
     ScreepsReturnCode
   } from "game/constants";
   import { MoveToOpts } from "game/path-finder";
-  export interface Creep extends RoomObject {
+  export interface Creep extends GameObject {
     readonly prototype: Creep;
     /**
      * The current amount of hit points of the creep.

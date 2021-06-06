@@ -5,7 +5,7 @@ declare module "game/prototypes" {
     x: number;
     y: number;
   }
-  export interface RoomObject extends RoomPosition {
+  export interface GameObject extends RoomPosition {
     /**
      * A unique object identificator.
      * You can use {@link getObjectById} method to retrieve an object instance by its id.

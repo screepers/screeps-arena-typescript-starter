@@ -30,7 +30,7 @@
 // This stuff is arena-specific
 import { ATTACK, HEAL, RANGED_ATTACK } from "game/constants";
 import { BodyPart, Flag } from "arena";
-import { Creep, RoomObject } from "game/prototypes";
+import { Creep, GameObject } from "game/prototypes";
 import { getDirection, getObjectsByPrototype, getRange, getTime } from "game/utils";
 import { searchPath } from "game/path-finder";
 
@@ -146,7 +146,7 @@ function healer(creep: Creep) {
   }
 }
 
-function flee(creep: Creep, targets: RoomObject[], range: number) {
+function flee(creep: Creep, targets: GameObject[], range: number) {
   const result = searchPath(
     creep,
     targets.map(i => ({ pos: i, range })),
