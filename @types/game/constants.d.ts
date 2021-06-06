@@ -198,6 +198,7 @@ declare module "game/constants" {
     StructureContainer: number;
     StructureWall: number;
     StructureRampart: number;
+    StructureSpawnt: number;
   };
 
   export type BuildableStructureConstant =
@@ -206,16 +207,17 @@ declare module "game/constants" {
     | STRUCTURE_ROAD
     | STRUCTURE_CONTAINER
     | STRUCTURE_WALL
-    | STRUCTURE_RAMPART;
+    | STRUCTURE_RAMPART
+    | STRUCTURE_SPAWN;
 
   export type BuildableStructure =
     | StructureTower
-    | StructureSpawn
-    | StructureRoad
-    | StructureRampart
     | StructureExtension
+    | StructureRoad
+    | StructureContainer
     | StructureWall
-    | StructureContainer;
+    | StructureRampart
+    | StructureSpawn;
 
   export const RAMPART_HITS: number;
   export const RAMPART_HITS_MAX: number;
@@ -233,4 +235,6 @@ declare module "game/constants" {
 
   export const WALL_HITS: number;
   export const WALL_HITS_MAX: number;
+  export const SPAWN_ENERGY_CAPACITY: number;
+  export const SPAWN_HITS: number;
 }
