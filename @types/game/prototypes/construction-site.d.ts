@@ -12,7 +12,10 @@ declare module "game/prototypes" {
      */
     progressTotal: number;
 
-    structurePrototypeName: STRUCTURE_PROTOTYPES;
+    /**
+     * One of the STRUCTURE_PROTOTYPES entries
+     */
+    structurePrototypeName: string;
 
     /**
      * Whether it is your construction site.
