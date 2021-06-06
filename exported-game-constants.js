@@ -14,14 +14,15 @@ export const CONSTRUCTION_COST = {
   StructureRoad: 10,
   StructureContainer: 100,
   StructureWall: 100,
-  StructureRampart: 200
+  StructureRampart: 200,
+  StructureSpawn: 3000
 };
 export const CONSTRUCTION_COST_ROAD_SWAMP_RATIO = 5;
 export const CONSTRUCTION_COST_ROAD_WALL_RATIO = 150;
 export const CONTAINER_CAPACITY = 2000;
 export const CONTAINER_HITS = 300;
 export const CREEP_SPAWN_TIME = 3;
-export class ConstructionSite extends RoomObject {
+export class ConstructionSite extends GameObject {
   get progress() {
     if (!this.exists) {
       return;
@@ -83,7 +84,7 @@ export class CostMatrix {
   }
 
   clone() {
-    let newMatrix = new CostMatrix();
+    var newMatrix = new CostMatrix();
     newMatrix._bits = new Uint8Array(this._bits);
     return newMatrix;
   }
@@ -98,7 +99,7 @@ export class CostMatrix {
     return instance;
   }
 }
-export class Creep extends RoomObject {
+export class Creep extends GameObject {
   get hits() {
     if (!this.exists) {
       return;
@@ -161,6 +162,9 @@ export class Creep extends RoomObject {
 
   moveTo(x, y, opts) {
     if (typeof x === "object") {
+      if (!x) {
+        return;
+      }
       opts = y;
       y = x.y;
       x = x.x;
@@ -181,7 +185,7 @@ export class Creep extends RoomObject {
       return C.ERR_NOT_OWNER;
     }
 
-    if (!target || !target.exists || !(target instanceof RoomObject)) {
+    if (!target || !target.exists || !(target instanceof GameObject)) {
       return C.ERR_INVALID_TARGET;
     }
 
@@ -223,7 +227,7 @@ export class Creep extends RoomObject {
       return C.ERR_NOT_OWNER;
     }
 
-    if (!target || !target.exists || !(target instanceof RoomObject)) {
+    if (!target || !target.exists || !(target instanceof GameObject)) {
       return C.ERR_INVALID_TARGET;
     }
 
@@ -248,7 +252,7 @@ export class Creep extends RoomObject {
       return C.ERR_NOT_OWNER;
     }
 
-    if (!target || !target.exists || !(target instanceof RoomObject)) {
+    if (!target || !target.exists || !(target instanceof GameObject)) {
       return C.ERR_INVALID_TARGET;
     }
 
@@ -273,7 +277,7 @@ export class Creep extends RoomObject {
       return C.ERR_NOT_OWNER;
     }
 
-    if (!target || !target.exists || !(target instanceof RoomObject)) {
+    if (!target || !target.exists || !(target instanceof GameObject)) {
       return C.ERR_INVALID_TARGET;
     }
 
@@ -530,18 +534,27 @@ export class Creep extends RoomObject {
       return C.ERR_NOT_IN_RANGE;
     }
 
-    const objectsInTile = [];
-    const creepsInTile = [];
+    const objectsInTile = [],
+      creepsInTile = [];
+    let rampart;
 
-    SystemStore.roomObjects.forEach(obj => {
-      if (obj.x == target.x && obj.y == target.y && C.OBSTACLE_OBJECT_TYPES.includes(obj.type)) {
-        if (obj.type == "creep") {
-          creepsInTile.push(obj);
-        } else {
-          objectsInTile.push(obj);
+    Object.values(SystemStore.roomObjectsData).forEach(obj => {
+      if (obj.x == target.x && obj.y == target.y) {
+        if (obj.type == "rampart") {
+          rampart = obj;
+        }
+        if (C.OBSTACLE_OBJECT_TYPES.includes(obj.type)) {
+          if (obj.type == "creep") {
+            creepsInTile.push(obj);
+          } else {
+            objectsInTile.push(obj);
+          }
         }
       }
     });
+    if (rampart && rampart.user !== SystemStore.roomObjectsData[this.id].user) {
+      return C.ERR_INVALID_TARGET;
+    }
     if (C.OBSTACLE_OBJECT_TYPES.includes(C.STRUCTURE_PROTOTYPES[target.structurePrototypeName])) {
       if (objectsInTile.length > 0) {
         return C.ERR_INVALID_TARGET;
@@ -573,6 +586,63 @@ export const ERR_NO_PATH = -2;
 export const ERR_TIRED = -11;
 export const EXTENSION_ENERGY_CAPACITY = 100;
 export const EXTENSION_HITS = 100;
+export class GameObject {
+  constructor(id) {
+    if (id) {
+      Object.defineProperty(this, "id", {
+        configurable: false,
+        enumerable: true,
+        value: id
+      });
+    }
+  }
+
+  get exists() {
+    return !!this.id && !!SystemStore.roomObjectsData[this.id];
+  }
+
+  get x() {
+    if (!this.exists) {
+      return;
+    }
+    return SystemStore.roomObjectsData[this.id].x;
+  }
+
+  get y() {
+    if (!this.exists) {
+      return;
+    }
+    return SystemStore.roomObjectsData[this.id].y;
+  }
+
+  findPathTo(pos, opts) {
+    return utils.findPath(this, pos, opts);
+  }
+
+  findInRange(positions, range) {
+    return utils.findInRange(this, positions, range);
+  }
+
+  findClosestByRange(positions) {
+    return utils.findClosestByRange(this, positions);
+  }
+
+  findClosestByPath(positions, opts) {
+    return utils.findClosestByPath(this, positions, opts);
+  }
+
+  getRangeTo(pos) {
+    return utils.getRange(this, pos);
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      x: this.x,
+      y: this.y
+    };
+  }
+}
 export const HARVEST_POWER = 2;
 export const HEAL = "heal";
 export const HEAL_POWER = 12;
@@ -613,7 +683,7 @@ export const RESOURCE_ENERGY = "energy";
 export const RIGHT = 3;
 export const ROAD_HITS = 500;
 export const ROAD_WEAROUT = 1;
-export class Resource extends RoomObject {
+export class Resource extends GameObject {
   get amount() {
     if (!this.exists) {
       return;
@@ -633,7 +703,7 @@ export class Resource extends RoomObject {
     });
   }
 }
-export class RoomObject {
+export class GameObject {
   constructor(id) {
     if (id) {
       Object.defineProperty(this, "id", {
@@ -691,6 +761,8 @@ export class RoomObject {
   }
 }
 export const SOURCE_ENERGY_REGEN = 10;
+export const SPAWN_ENERGY_CAPACITY = 1000;
+export const SPAWN_HITS = 3000;
 export const STRUCTURE_PROTOTYPES = {
   StructureTower: "tower",
   StructureSpawn: "spawn",
@@ -700,7 +772,7 @@ export const STRUCTURE_PROTOTYPES = {
   StructureWall: "constructedWall",
   StructureContainer: "container"
 };
-export class Source extends RoomObject {
+export class Source extends GameObject {
   get energy() {
     if (!this.exists) {
       return;
@@ -720,7 +792,7 @@ export class Source extends RoomObject {
     });
   }
 }
-export class Structure extends RoomObject {
+export class Structure extends GameObject {
   get hits() {
     if (!this.exists) {
       return;
@@ -761,20 +833,20 @@ export class StructureSpawn extends OwnedStructure {
 
   spawnCreep(body) {
     if (!this.my) {
-      return C.ERR_NOT_OWNER;
+      return returnError(C.ERR_NOT_OWNER);
     }
 
     if (SystemStore.roomObjectsData[this.id].spawning) {
-      return C.ERR_BUSY;
+      return returnError(C.ERR_BUSY);
     }
 
     if (!body || !Array.isArray(body) || body.length === 0 || body.length > C.MAX_CREEP_SIZE) {
-      return C.ERR_INVALID_ARGS;
+      return returnError(C.ERR_INVALID_ARGS);
     }
 
     for (let i = 0; i < body.length; i++) {
       if (!C.BODYPART_COST[body[i]]) {
-        return C.ERR_INVALID_ARGS;
+        return returnError(C.ERR_INVALID_ARGS);
       }
     }
 
@@ -782,12 +854,16 @@ export class StructureSpawn extends OwnedStructure {
       .filter(i => (i.user === SystemStore.roomObjectsData[this.id].user && i.type == "spawn") || i.type == "extension")
       .reduce((sum, i) => sum + (i.store.energy || 0), 0);
     if (energyAvailable < body.reduce((sum, i) => sum + C.BODYPART_COST[i], 0)) {
-      return C.ERR_NOT_ENOUGH_ENERGY;
+      return returnError(C.ERR_NOT_ENOUGH_ENERGY);
     }
 
-    let creep = new Creep();
-    Intents.set(this.id, "spawnCreep", { body, createRequest: getCreateRequest(creep) });
-    return creep;
+    let object = new Creep();
+    Intents.set(this.id, "spawnCreep", { body, createRequest: getCreateRequest(object) });
+    if (SystemStore.codeCreatedAt > breakingChanges.returnCompositeObject) {
+      return { object };
+    } else {
+      return object;
+    }
   }
 }
 export class StructureTower extends OwnedStructure {
@@ -812,7 +888,7 @@ export class StructureTower extends OwnedStructure {
       return C.ERR_TIRED;
     }
 
-    if (!target || !target.exists || !(target instanceof RoomObject)) {
+    if (!target || !target.exists || !(target instanceof GameObject)) {
       return C.ERR_INVALID_TARGET;
     }
 
@@ -837,7 +913,7 @@ export class StructureTower extends OwnedStructure {
       return C.ERR_TIRED;
     }
 
-    if (!target || !target.exists || !(target instanceof RoomObject)) {
+    if (!target || !target.exists || !(target instanceof GameObject)) {
       return C.ERR_INVALID_TARGET;
     }
 
@@ -888,7 +964,8 @@ export const constants = {
     StructureRoad: 10,
     StructureContainer: 100,
     StructureWall: 100,
-    StructureRampart: 200
+    StructureRampart: 200,
+    StructureSpawn: 3000
   },
   CONSTRUCTION_COST_ROAD_SWAMP_RATIO: 5,
   CONSTRUCTION_COST_ROAD_WALL_RATIO: 150,
@@ -937,6 +1014,8 @@ export const constants = {
   ROAD_HITS: 500,
   ROAD_WEAROUT: 1,
   SOURCE_ENERGY_REGEN: 10,
+  SPAWN_ENERGY_CAPACITY: 1000,
+  SPAWN_HITS: 3000,
   STRUCTURE_PROTOTYPES: {
     StructureTower: "tower",
     StructureSpawn: "spawn",
@@ -976,45 +1055,51 @@ export function createConstructionSite(x, y, structurePrototype) {
     y <= 0 ||
     y >= SystemStore.arenaSize - 1
   ) {
-    return C.ERR_INVALID_ARGS;
+    return returnError(C.ERR_INVALID_ARGS);
   }
   if (!Object.values(prototypes).includes(structurePrototype)) {
-    return C.ERR_INVALID_ARGS;
+    return returnError(C.ERR_INVALID_ARGS);
   }
   if (!C.CONSTRUCTION_COST[structurePrototype.prototype.constructor.name]) {
-    return C.ERR_INVALID_ARGS;
+    return returnError(C.ERR_INVALID_ARGS);
   }
   if (
     !checkConstructionSite(
       structurePrototype.prototype.constructor.name,
       x,
       y,
-      SystemStore.roomObjects,
+      Object.values(SystemStore.roomObjectsData),
       SystemStore.terrain,
       SystemStore.arenaSize
     )
   ) {
-    return C.ERR_INVALID_TARGET;
+    return returnError(C.ERR_INVALID_TARGET);
   }
 
   if (
-    SystemStore.roomObjects.filter(i => i.type === "constructionSite").length + SystemStore.createdConstructionSites >=
+    Object.values(SystemStore.roomObjects).filter(i => i.type === "constructionSite").length +
+      SystemStore.createdConstructionSites >=
     C.MAX_CONSTRUCTION_SITES
   ) {
-    return C.ERR_FULL;
+    return returnError(C.ERR_FULL);
   }
 
   SystemStore.createdConstructionSites++;
 
-  let site = new prototypes.ConstructionSite();
+  let object = new prototypes.ConstructionSite();
+  Object.defineProperty(object, "structure", { value: new structurePrototype() });
   Intents.pushByName("global", "createConstructionSite", {
     x,
     y,
     structurePrototypeName: structurePrototype.prototype.constructor.name,
-    createRequest: getCreateRequest(site)
+    createRequest: getCreateRequest(object),
+    structureCreateRequest: getCreateRequest(object.structure)
   });
-
-  return site;
+  if (SystemStore.codeCreatedAt > breakingChanges.returnCompositeObject) {
+    return { object };
+  } else {
+    return object;
+  }
 }
 export function findClosestByPath(fromPos, positions, opts = {}) {
   if (!positions || !positions.length) {
@@ -1050,8 +1135,8 @@ export function findClosestByPath(fromPos, positions, opts = {}) {
   return result;
 }
 export function findClosestByRange(fromPos, positions) {
-  let closest = null;
-  let minRange = Infinity;
+  let closest = null,
+    minRange = Infinity;
 
   positions.forEach(i => {
     if (i.x === undefined || i.y === undefined) {
@@ -1084,8 +1169,8 @@ export function findPath(fromPos, toPos, opts = {}) {
   return result.path;
 }
 export function getDirection(dx, dy) {
-  let adx = Math.abs(dx);
-  let ady = Math.abs(dy);
+  var adx = Math.abs(dx),
+    ady = Math.abs(dy);
 
   if (adx > ady * 2) {
     if (dx > 0) {
@@ -1140,11 +1225,12 @@ export function getTime() {
   return SystemStore.time;
 }
 export const pathFinder = {};
+export const prototypes = {};
 export function searchPath(origin, goal, options) {
   // Options
   options = options || {};
-  let plainCost = Math.min(254, Math.max(1, options.plainCost | 0 || 1));
-  let swampCost = Math.min(254, Math.max(1, options.swampCost | 0 || 5));
+  let plainCost = Math.min(254, Math.max(1, options.plainCost | 0 || 2));
+  let swampCost = Math.min(254, Math.max(1, options.swampCost | 0 || 10));
   let heuristicWeight = Math.min(9, Math.max(1, options.heuristicWeight || 1.2));
   let maxOps = Math.max(1, options.maxOps | 0 || 10000);
   let maxCost = Math.max(1, options.maxCost | 0 || 0xffffffff);
@@ -1160,7 +1246,7 @@ export function searchPath(origin, goal, options) {
     } else {
       let range = Math.max(0, goal.range | 0);
       return {
-        range,
+        range: range,
         pos: toWorldPosition(goal.pos)
       };
     }
