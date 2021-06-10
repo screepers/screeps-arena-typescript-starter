@@ -6,7 +6,7 @@
 //   RANGED_ATTACK,
 //   RoomPosition,
 //   getDirection,
-//   getDistance,
+//   getRange,
 //   getObjectById,
 //   getObjectsByPrototype,
 //   getTime
@@ -30,8 +30,8 @@
 // This stuff is arena-specific
 import { ATTACK, HEAL, RANGED_ATTACK } from "game/constants";
 import { BodyPart, Flag } from "arena";
-import { Creep, RoomObject } from "game/prototypes";
-import { getDirection, getDistance, getObjectsByPrototype, getTime } from "game/utils";
+import { Creep, GameObject } from "game/prototypes";
+import { getDirection, getObjectsByPrototype, getRange, getTime } from "game/utils";
 import { searchPath } from "game/path-finder";
 
 declare module "game/prototypes" {
@@ -85,8 +85,8 @@ function meleeAttacker(creep: Creep) {
   }
 
   const targets = enemyCreeps
-    .filter(i => getDistance(i, creep.initialPos) < 10)
-    .sort((a, b) => getDistance(a, creep) - getDistance(b, creep));
+    .filter(i => getRange(i, creep.initialPos) < 10)
+    .sort((a, b) => getRange(a, creep) - getRange(b, creep));
 
   if (targets.length > 0) {
     creep.moveTo(targets[0]);
@@ -97,7 +97,7 @@ function meleeAttacker(creep: Creep) {
 }
 
 function rangedAttacker(creep: Creep) {
-  const targets = enemyCreeps.filter(i => true).sort((a, b) => getDistance(a, creep) - getDistance(b, creep));
+  const targets = enemyCreeps.sort((a, b) => getRange(a, creep) - getRange(b, creep));
 
   if (targets.length > 0) {
     creep.rangedAttack(targets[0]);
@@ -108,7 +108,7 @@ function rangedAttacker(creep: Creep) {
   }
 
   const range = 3;
-  const enemiesInRange = enemyCreeps.filter(i => getDistance(i, creep) < range);
+  const enemiesInRange = enemyCreeps.filter(i => getRange(i, creep) < range);
   if (enemiesInRange.length > 0) {
     flee(creep, enemiesInRange, range);
   }
@@ -125,10 +125,10 @@ function healer(creep: Creep) {
     }
   }
 
-  const healTargets = myCreeps.filter(i => getDistance(i, creep) <= 3).sort((a, b) => a.hits - b.hits);
+  const healTargets = myCreeps.filter(i => getRange(i, creep) <= 3).sort((a, b) => a.hits - b.hits);
 
   if (healTargets.length > 0) {
-    if (getDistance(healTargets[0], creep) === 1) {
+    if (getRange(healTargets[0], creep) === 1) {
       creep.heal(healTargets[0]);
     } else {
       creep.rangedHeal(healTargets[0]);
@@ -136,7 +136,7 @@ function healer(creep: Creep) {
   }
 
   const range = 7;
-  const enemiesInRange = enemyCreeps.filter(i => getDistance(i, creep) < range);
+  const enemiesInRange = enemyCreeps.filter(i => getRange(i, creep) < range);
   if (enemiesInRange.length > 0) {
     flee(creep, enemiesInRange, range);
   }
@@ -146,7 +146,7 @@ function healer(creep: Creep) {
   }
 }
 
-function flee(creep: Creep, targets: RoomObject[], range: number) {
+function flee(creep: Creep, targets: GameObject[], range: number) {
   const result = searchPath(
     creep,
     targets.map(i => ({ pos: i, range })),

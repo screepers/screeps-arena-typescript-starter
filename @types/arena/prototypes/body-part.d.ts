@@ -1,8 +1,8 @@
 declare module "arena/prototypes" {
-  import { RoomObject, _Constructor, _ConstructorById } from "game/prototypes";
-  import { BodyPartConstant } from "game";
+  import { GameObject, _Constructor, _ConstructorById } from "game/prototypes";
+  import { BodyPartConstant } from "game/constants";
 
-  export interface BodyPart extends RoomObject {
+  export interface BodyPart extends GameObject {
     readonly prototype: BodyPart;
     /**
      * The type of the body part.

@@ -1,6 +1,6 @@
 declare module "arena/prototypes" {
-  import { RoomObject, _Constructor, _ConstructorById } from "game/prototypes";
-  export interface Flag extends RoomObject {
+  import { GameObject, _Constructor, _ConstructorById } from "game/prototypes";
+  export interface Flag extends GameObject {
     readonly prototype: Flag;
     /**
      * Equals to true or false if the flag is owned.

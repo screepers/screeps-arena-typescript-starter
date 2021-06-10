@@ -1,8 +1,16 @@
 /* eslint-disable camelcase */
 declare module "game/utils" {
-  import { DirectionConstant, TERRAIN_SWAMP, TERRAIN_WALL } from "game/constants";
+  import {
+    BuildableStructure,
+    DirectionConstant,
+    ERR_FULL,
+    ERR_INVALID_ARGS,
+    ERR_INVALID_TARGET,
+    TERRAIN_SWAMP,
+    TERRAIN_WALL
+  } from "game/constants";
+  import { ConstructionSite, GameObject, Id, RoomPosition, _Constructor } from "game/prototypes";
   import { FindPathOpts, PathStep } from "game/path-finder";
-  import { Id, RoomObject, RoomPosition, _Constructor } from "game/prototypes";
 
   /**
    * Get count of game ticks passed since the start of the game
@@ -16,7 +24,7 @@ declare module "game/utils" {
   /**
    * Get all objects in the game.
    */
-  export function getObjects(): RoomObject[];
+  export function getObjects(): GameObject[];
   /**
    * Get all objects in the game with the specified prototype, for example, all creeps
    * @param prototype
@@ -48,8 +56,16 @@ declare module "game/utils" {
    * Get linear range between two objects. a and b may be any object containing x and y properties.
    * @param a
    * @param b
+   * @deprecated alias for getRange
    */
   export function getDistance(a: RoomPosition, b: RoomPosition): number;
+
+  /**
+   * Get linear range between two objects. a and b may be any object containing x and y properties.
+   * @param a
+   * @param b
+   */
+  export function getRange(a: RoomPosition, b: RoomPosition): number;
 
   /**
    * Get an integer representation of the terrain at the given position.
@@ -57,6 +73,48 @@ declare module "game/utils" {
    * @param pos pos should be an object containing x and y properties
    */
   export function getTerrainAt(pos: RoomPosition): TERRAIN_WALL | TERRAIN_SWAMP | 0;
+
+  /**
+   * Find all positions from the given positions array within the specified linear range.
+   * @param fromPos
+   * @param positions
+   * @param range
+   */
+  export function findInRange(fromPos: RoomPosition, positions: RoomPosition[], range: number): RoomPosition[];
+
+  /**
+   * Find a position with the shortest linear distance from the given position, or null otherwise.
+   * @param fromPos
+   * @param positions
+   */
+  export function findClosestByRange(fromPos: RoomPosition, positions: RoomPosition[]): RoomPosition;
+
+  /**
+   * Find a position with the shortest path from the given position, or null otherwise.
+   * @param fromPos
+   * @param positions
+   * @param opts object containing additional options:
+   * ignore: array (objects which should be treated as obstacles during the search)
+   * Any options supported by searchPath method
+   */
+  export function findClosestByPath(
+    fromPos: RoomPosition,
+    positions: RoomPosition[],
+    opts?: FindPathOpts
+  ): RoomPosition;
+
+  /**
+   * Create new ConstructionSite at the specified location.
+   * @param x The X position.
+   * @param y The Y position.
+   * @param structurePrototype One of the following constants: StuctureExtension, StructureTower
+   * @returns Result Code: OK, ERR_INVALID_TARGET, ERR_INVALID_ARGS, ERR_RCL_NOT_ENOUGH
+   */
+  export function createConstructionSite(
+    x: number,
+    y: number,
+    structureType: _Constructor<BuildableStructure>
+  ): { object?: ConstructionSite; error?: ERR_INVALID_ARGS | ERR_INVALID_TARGET | ERR_FULL };
 
   export interface HeapStatistics {
     total_heap_size: number;
