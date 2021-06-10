@@ -20,7 +20,7 @@ declare module "game/prototypes" {
     ScreepsReturnCode
   } from "game/constants";
   import { MoveToOpts } from "game/path-finder";
-  export interface Creep extends RoomObject {
+  export interface Creep extends GameObject {
     readonly prototype: Creep;
     /**
      * The current amount of hit points of the creep.
@@ -52,14 +52,14 @@ declare module "game/prototypes" {
      * Move the creep one square in the specified direction. direction must be one of the following constants:
      * @param direction
      */
-    move(direction: DirectionConstant): CreepMoveReturnCode;
+    move(direction: DirectionConstant): CreepMoveReturnCode | undefined;
     /**
      * Find the optimal path to the target within the same room and move to it.
      * A shorthand to consequent calls of findPathTo() and move() methods.
      * @param target target can be any object containing x and y properties.
      * @param opts opts is an optional object containing additional options. See /game/utils::findPath for details.
      */
-    moveTo(target: RoomPosition, opts?: MoveToOpts): CreepMoveReturnCode | ERR_NO_PATH | ERR_INVALID_TARGET;
+    moveTo(target: RoomPosition, opts?: MoveToOpts): CreepMoveReturnCode | ERR_NO_PATH | ERR_INVALID_TARGET | undefined;
     /**
      * A ranged attack against another creep or structure. Requires the RANGED_ATTACK body part.
      * The target has to be within 3 squares range of the creep.

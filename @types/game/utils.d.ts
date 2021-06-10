@@ -1,7 +1,15 @@
 /* eslint-disable camelcase */
 declare module "game/utils" {
-  import { BuildableStructure, DirectionConstant, TERRAIN_SWAMP, TERRAIN_WALL } from "game/constants";
-  import { ConstructionSite, Id, RoomObject, RoomPosition, _Constructor } from "game/prototypes";
+  import {
+    BuildableStructure,
+    DirectionConstant,
+    ERR_FULL,
+    ERR_INVALID_ARGS,
+    ERR_INVALID_TARGET,
+    TERRAIN_SWAMP,
+    TERRAIN_WALL
+  } from "game/constants";
+  import { ConstructionSite, GameObject, Id, RoomPosition, _Constructor } from "game/prototypes";
   import { FindPathOpts, PathStep } from "game/path-finder";
 
   /**
@@ -16,7 +24,7 @@ declare module "game/utils" {
   /**
    * Get all objects in the game.
    */
-  export function getObjects(): RoomObject[];
+  export function getObjects(): GameObject[];
   /**
    * Get all objects in the game with the specified prototype, for example, all creeps
    * @param prototype
@@ -106,7 +114,7 @@ declare module "game/utils" {
     x: number,
     y: number,
     structureType: _Constructor<BuildableStructure>
-  ): ConstructionSite;
+  ): { object?: ConstructionSite; error?: ERR_INVALID_ARGS | ERR_INVALID_TARGET | ERR_FULL };
 
   export interface HeapStatistics {
     total_heap_size: number;

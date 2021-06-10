@@ -7,7 +7,7 @@ export function loop(): void {
   if (!attacker) {
     const mySpawn = getObjectsByPrototype(StructureSpawn).find(i => i.my);
     if (mySpawn) {
-      attacker = mySpawn.spawnCreep([MOVE, ATTACK]);
+      attacker = mySpawn.spawnCreep([MOVE, ATTACK]).object;
     }
   } else {
     const enemySpawn = getObjectsByPrototype(StructureSpawn).find(i => !i.my);
