@@ -2,8 +2,8 @@ import { Creep, OwnedStructure, Structure, StructureTower } from "game/prototype
 import { constants, pathFinder, prototypes, utils } from "game";
 import { getObjectsByPrototype, getTime } from "game/utils";
 import { CostMatrix } from "game/path-finder";
-import { RESOURCE_ENERGY } from "game/constants";
 import { Flag } from "arena";
+import { RESOURCE_ENERGY } from "game/constants";
 
 export function loop(): void {
   console.log(`The time is ${getTime()}`);

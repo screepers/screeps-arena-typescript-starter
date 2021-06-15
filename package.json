@@ -20,16 +20,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/screepers/screeps-typescript-starter.git"
+    "url": "git+https://github.com/screepers/screeps-arena-typescript-starter.git"
   },
   "author": "",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/screepers/screeps-typescript-starter/issues"
+    "url": "https://github.com/screepers/screeps-arena-typescript-starter/issues"
   },
-  "homepage": "https://github.com/screepers/screeps-typescript-starter#readme",
+  "homepage": "https://github.com/screepers/screeps-arena-typescript-starter#readme",
   "engines": {
-    "node": "10.x || 12.x"
+    "node": "10.x || 12.x || 16.x"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -39,6 +39,7 @@
     "@types/node": "^13.13.1",
     "@types/sinon": "^5.0.5",
     "@types/sinon-chai": "^3.2.0",
+    "@types/screeps-arena": "screepers/typed-screeps-arena#develop",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
     "@typescript-eslint/typescript-estree": "^3.7.0",
