@@ -20,6 +20,7 @@ declare module "game/prototypes" {
     ScreepsReturnCode
   } from "game/constants";
   import { MoveToOpts } from "game/path-finder";
+  import { ScoreCollector } from "arena";
   export interface Creep extends GameObject {
     readonly prototype: Creep;
     /**
@@ -123,7 +124,11 @@ declare module "game/prototypes" {
      * @param resourceType One of the RESOURCE_* constants
      * @param amount The amount of resources to be transferred. If omitted, all the available carried amount is used.
      */
-    transfer(target: AnyCreep | Structure, resourceType: ResourceConstant, amount?: number): ScreepsReturnCode;
+    transfer(
+      target: AnyCreep | Structure | ScoreCollector,
+      resourceType: ResourceConstant,
+      amount?: number
+    ): ScreepsReturnCode;
 
     /**
      * Withdraw resources from a structure, a tombstone or a ruin.

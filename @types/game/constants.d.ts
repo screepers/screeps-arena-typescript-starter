@@ -16,6 +16,8 @@ declare module "game/constants" {
     StructureTower,
     StructureWall
   } from "game/prototypes";
+  import { RESOURCE_SCORE } from "arena";
+
   export type BodyPartConstant = MOVE | WORK | CARRY | ATTACK | RANGED_ATTACK | TOUGH | HEAL | CLAIM;
 
   export type MOVE = "move";
@@ -161,7 +163,7 @@ declare module "game/constants" {
 
   export const RESOURCE_ENERGY: "energy";
 
-  export type ResourceConstant = typeof RESOURCE_ENERGY;
+  export type ResourceConstant = typeof RESOURCE_ENERGY | typeof RESOURCE_SCORE;
 
   export type AnyCreep = Creep; /* | PowerCreep;*/
 
