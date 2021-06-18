@@ -1,8 +1,8 @@
 import { Creep, OwnedStructure, Structure, StructureTower } from "game/prototypes";
+import { Flag, RESOURCE_SCORE, ScoreCollector } from "arena";
 import { constants, pathFinder, prototypes, utils } from "game";
 import { getObjectsByPrototype, getTime } from "game/utils";
 import { CostMatrix } from "game/path-finder";
-import { Flag } from "arena";
 import { RESOURCE_ENERGY } from "game/constants";
 
 export function loop(): void {
@@ -33,5 +33,13 @@ export function loop(): void {
   if (myTower) {
     const energyStored = myTower.store[RESOURCE_ENERGY];
     const maxCapacity = myTower.store.getCapacity(RESOURCE_ENERGY);
+  }
+
+  // verification of arena score
+  const scoreTestCreep = utils.getObjectsByPrototype(Creep).find(i => i.my);
+  const scoreCollector = utils.getObjectsByPrototype(ScoreCollector)[0];
+  if (scoreTestCreep && scoreCollector) {
+    const scoreStored = scoreTestCreep.store[RESOURCE_SCORE];
+    scoreTestCreep.transfer(scoreCollector, RESOURCE_SCORE);
   }
 }
