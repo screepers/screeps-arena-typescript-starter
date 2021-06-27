@@ -15,7 +15,7 @@ declare module "game/utils" {
   /**
    * Get count of game ticks passed since the start of the game
    */
-  export function getTime(): number;
+  export function getTicks(): number;
   /**
    * Get an object with the specified unique ID.
    * @param id
