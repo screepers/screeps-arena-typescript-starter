@@ -10,15 +10,9 @@
 
 TODO:
 
-- [x] Update readme
-- [x] A way to seperate the code for the different arenas
-- [x] `dist` should have multiple folders, one for each arena and their versions (ctf advanced as an example)
 - [ ] A way to push code to a specific arena `npm run push alpha-capture-the-flag`
   - Will probably be a copy of files to the correct location, depending on what location has been choosen in the arena client.
   - If we can't detect the locations, we will probably need a `screeps-arena.json` file where people can set up their desired output destinations
-- [x] Initial typing declarations for Screeps Arena
-- [x] Fletch out typings for Screeps Arena
-- [ ] Make a new repo later for `typed-screeps-arena` that can be published to `@types/screeps-arena`
 
 Current Issues:
 
@@ -35,6 +29,8 @@ Current Issues:
 Screeps Arena Typescript Starter is a starting point for a Screeps Arena AI written in Typescript. It provides everything you need to start writing your AI whilst leaving `main.ts` as empty as possible.
 
 The initial example code from the steam forum is included in `src/alpha-capture_the_flag/main.ts`
+
+It uses the following project for typings https://github.com/screepers/typed-screeps-arena
 
 ## Basic Usage
 
