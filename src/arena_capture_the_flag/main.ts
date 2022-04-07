@@ -31,7 +31,7 @@
 import { ATTACK, HEAL, RANGED_ATTACK } from "game/constants";
 import { BodyPart, Flag } from "arena";
 import { Creep, GameObject } from "game/prototypes";
-import { getDirection, getObjectsByPrototype, getRange, getTime } from "game/utils";
+import { getDirection, getObjectsByPrototype, getRange, getTicks } from "game/utils";
 import { searchPath } from "game/path-finder";
 
 declare module "game/prototypes" {
@@ -60,7 +60,7 @@ export function loop(): void {
   enemyFlag = getObjectsByPrototype(Flag).find(i => !i.my);
 
   // Notice how getTime is a global function, but not Game.time anymore
-  if (getTime() % 10 === 0) {
+  if (getTicks() % 10 === 0) {
     console.log(`I have ${myCreeps.length} creeps`);
   }
 

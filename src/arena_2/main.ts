@@ -1,5 +1,5 @@
-import { getTime } from "game/utils";
+import { getTicks } from "game/utils";
 
 export function loop(): void {
-  console.log(`The time is ${getTime()}`);
+  console.log(`The time is ${getTicks()}`);
 }
