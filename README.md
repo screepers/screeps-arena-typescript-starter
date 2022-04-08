@@ -30,8 +30,6 @@ Screeps Arena Typescript Starter is a starting point for a Screeps Arena AI writ
 
 The initial example code from the steam forum is included in `src/alpha-capture_the_flag/main.ts`
 
-It uses the following project for typings https://github.com/screepers/typed-screeps-arena
-
 ## Basic Usage
 
 You will need:
@@ -66,7 +64,7 @@ Fire up your preferred editor with typescript installed and you are good to go!
 
 ## Typings
 
-The type definitions for Screeps Arena currently resides in the `@types` folder
+It uses the following project for typings https://github.com/screepers/typed-screeps-arena
 
 ## Contributing
 
