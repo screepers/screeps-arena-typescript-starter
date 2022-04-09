@@ -78,7 +78,7 @@ export class ErrorMapper {
           //   const message = `Source maps don't work in the simulator - displaying original error`;
           //   console.log(`<span style='color:red'>${message}<br>${_.escape(e.stack)}</span>`);
           // } else {
-            console.log(`<span style='color:red'>${this.sourceMappedStackTrace(e)}</span>`);
+          console.log(`<span style='color:red'>${this.sourceMappedStackTrace(e)}</span>`);
           //}
         } else {
           // can't handle it
