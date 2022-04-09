@@ -14,9 +14,7 @@ module.exports = {
     "plugin:import/warnings",
     "plugin:import/typescript"
   ],
-  ignorePatterns: [
-    "exported-game-constants.js"
-  ],
+  ignorePatterns: ["exported-game-constants.js"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "tsconfig.json",
@@ -30,7 +28,16 @@ module.exports = {
     "import/resolver": {
       typescript: {}
     },
-    "import/core-modules": ["game", "game/prototypes", "game/utils", "game/path-finder","game/constants", "arena", "arena/prototypes", "arena/constants"] // https://github.com/benmosher/eslint-plugin-import/blob/v2.22.1/README.md#importcore-modules
+    "import/core-modules": [
+      "game",
+      "game/prototypes",
+      "game/utils",
+      "game/path-finder",
+      "game/constants",
+      "arena",
+      "arena/prototypes",
+      "arena/constants"
+    ] // https://github.com/benmosher/eslint-plugin-import/blob/v2.22.1/README.md#importcore-modules
   },
   rules: {
     "@typescript-eslint/array-type": "error",
@@ -87,6 +94,6 @@ module.exports = {
     "quote-props": "off",
     radix: "error",
     "sort-imports": "warn",
-    "spaced-comment": "error",
+    "spaced-comment": "error"
   }
 };

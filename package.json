@@ -6,6 +6,7 @@
   "//": "If you add or change the names of destinations in screeps.json, make sure you update these scripts to reflect the changes",
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
+    "format": "prettier --write --ignore-unknown --ignore-path .gitignore '**/*'",
     "build": "rollup -c --config-",
     "test": "npm run test-unit",
     "test-unit": "mocha test/unit/**/*.ts",

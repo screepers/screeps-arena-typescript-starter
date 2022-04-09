@@ -15,8 +15,7 @@ if (process.argv[3] === "--config-") {
 }
 
 function getOptions(arenaSrc) {
-
-  const outDir = arenaSrc.replace("src/","dist/");
+  const outDir = arenaSrc.replace("src/", "dist/");
 
   const options = {
     input: `${arenaSrc}/main.ts`,
@@ -28,7 +27,7 @@ function getOptions(arenaSrc) {
       sourcemap: false,
       preserveModules: true,
       preserveModulesRoot: arenaSrc,
-      paths: (path) => {
+      paths: path => {
         // https://rollupjs.org/guide/en/#outputpaths
         // TS requires that we use non-relative paths for these "ambient" modules
         // The game requires relative paths, so prefix all game modules with "/" in the output bundle
@@ -39,8 +38,8 @@ function getOptions(arenaSrc) {
     },
 
     plugins: [
-      clear({ targets: targetArena === "" ? ["dist"] : [outDir]}), // If targeted build, only clear target sub-directory
-      resolve({ rootDir: "src"}),
+      clear({ targets: targetArena === "" ? ["dist"] : [outDir] }), // If targeted build, only clear target sub-directory
+      resolve({ rootDir: "src" }),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" })
     ]
