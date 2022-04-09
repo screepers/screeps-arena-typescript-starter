@@ -7,16 +7,9 @@
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
     "build": "rollup -c --config-",
-    "push-main": "rollup -c --environment DEST:main",
-    "push-pserver": "rollup -c --environment DEST:pserver",
-    "push-season": "rollup -c --environment DEST:season",
-    "push-sim": "rollup -c --environment DEST:sim",
     "test": "npm run test-unit",
     "test-unit": "mocha test/unit/**/*.ts",
-    "watch-main": "rollup -cw --environment DEST:main",
-    "watch-pserver": "rollup -cw --environment DEST:pserver",
-    "watch-season": "rollup -cw --environment DEST:season",
-    "watch-sim": "rollup -cw --environment DEST:sim"
+    "watch": "rollup -cw --config-"
   },
   "repository": {
     "type": "git",
