@@ -33,6 +33,7 @@ import { BodyPart, Flag } from "arena";
 import { Creep, GameObject } from "game/prototypes";
 import { getDirection, getObjectsByPrototype, getRange, getTicks } from "game/utils";
 import { searchPath } from "game/path-finder";
+import { Visual } from "game/visual";
 
 declare module "game/prototypes" {
   interface Creep {
@@ -84,6 +85,16 @@ function meleeAttacker(creep: Creep) {
     creep.initialPos = { x: creep.x, y: creep.y };
   }
 
+  new Visual().text(
+    creep.hits.toString(),
+    { x: creep.x, y: creep.y - 0.5 }, // above the creep
+    {
+      font: "0.5",
+      opacity: 0.7,
+      backgroundColor: "#808080",
+      backgroundPadding: 0.03,
+    }
+    );
   const targets = enemyCreeps
     .filter(i => getRange(i, creep.initialPos) < 10)
     .sort((a, b) => getRange(a, creep) - getRange(b, creep));
