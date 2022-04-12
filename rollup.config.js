@@ -19,7 +19,7 @@ function getOptions(arenaSrc) {
 
   const options = {
     input: `${arenaSrc}/main.ts`,
-    external: ["game", "game/prototypes", "game/constants", "game/utils", "game/path-finder", "arena"], // <-- suppresses the warning
+    external: ["game", "game/prototypes", "game/constants", "game/utils", "game/path-finder", "arena", "game/visual"], // <-- suppresses the warning
     output: {
       dir: outDir,
       format: "esm",
