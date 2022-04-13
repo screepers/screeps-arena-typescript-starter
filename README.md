@@ -15,12 +15,7 @@ TODO:
   - If we can't detect the locations, we will probably need a `screeps-arena.json` file where people can set up their desired output destinations
 
 Current Issues:
-
-- eslint warnings
-  - Unable to resolve path to module 'game' (.eslintimport/no-unresolved)
-- ErrorMapper is not usable
-  - `require` is undefined and there doesn't appear to be a way to load the source map.
-  - Use named functions where possible for a better debug experience when errors do occur
+None
 
 ---
 
@@ -65,6 +60,10 @@ Fire up your preferred editor with typescript installed and you are good to go!
 ## Typings
 
 It uses the following project for typings https://github.com/screepers/typed-screeps-arena
+When the typings are updated and you need to get the newest types
+
+- delete node_modules/@types/screeps-arena
+- run `npm i` to reinstall the packages. You might need to delete package-lock.json to get the types.
 
 ## Contributing
 
