@@ -34,6 +34,7 @@ module.exports = {
       "game/utils",
       "game/path-finder",
       "game/constants",
+      "game/visual",
       "arena",
       "arena/prototypes",
       "arena/constants"
