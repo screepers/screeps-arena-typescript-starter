@@ -78,7 +78,7 @@ module.exports = {
     "no-invalid-this": "off",
     "no-multiple-empty-lines": "off",
     "no-new-wrappers": "error",
-    "no-shadow": [
+    "@typescript-eslint/no-shadow": [
       "error",
       {
         hoist: "all"
