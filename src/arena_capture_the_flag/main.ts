@@ -92,9 +92,9 @@ function meleeAttacker(creep: Creep) {
       font: "0.5",
       opacity: 0.7,
       backgroundColor: "#808080",
-      backgroundPadding: 0.03,
+      backgroundPadding: 0.03
     }
-    );
+  );
   const targets = enemyCreeps
     .filter(i => getRange(i, creep.initialPos) < 10)
     .sort((a, b) => getRange(a, creep) - getRange(b, creep));
