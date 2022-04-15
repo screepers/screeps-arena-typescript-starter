@@ -29,11 +29,11 @@
 
 // This stuff is arena-specific
 import { ATTACK, HEAL, RANGED_ATTACK } from "game/constants";
-import { BodyPart, Flag } from "arena";
 import { Creep, GameObject } from "game/prototypes";
 import { getDirection, getObjectsByPrototype, getRange, getTicks } from "game/utils";
-import { searchPath } from "game/path-finder";
+import { Flag } from "arena";
 import { Visual } from "game/visual";
+import { searchPath } from "game/path-finder";
 
 declare module "game/prototypes" {
   interface Creep {
