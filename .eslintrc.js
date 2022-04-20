@@ -60,7 +60,7 @@ module.exports = {
     "arrow-parens": ["off", "as-needed"],
     camelcase: "error",
     complexity: "off",
-    "dot-notation": "error",
+    "@typescript-eslint/dot-notation": "error",
     "eol-last": "off",
     eqeqeq: ["error", "smart"],
     "guard-for-in": "off",
@@ -75,7 +75,7 @@ module.exports = {
     "no-cond-assign": "error",
     "no-console": "off",
     "no-eval": "error",
-    "no-invalid-this": "off",
+    "@typescript-eslint/no-invalid-this": "off",
     "no-multiple-empty-lines": "off",
     "no-new-wrappers": "error",
     "@typescript-eslint/no-shadow": [
@@ -84,7 +84,7 @@ module.exports = {
         hoist: "all"
       }
     ],
-    "no-throw-literal": "error",
+    "@typescript-eslint/no-throw-literal": "error",
     "no-trailing-spaces": "off",
     "no-undef-init": "error",
     "no-underscore-dangle": "warn",
